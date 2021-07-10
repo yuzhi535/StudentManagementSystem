@@ -6,6 +6,7 @@ from django.dispatch import receiver
 
 
 class CustomUser(AbstractUser):
+    user_id = models.CharField(primary_key=True, max_length=255)
     user_type_data = ((1, "Admin"), (2, "Staff"), (3, "Student"))
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
 
@@ -67,18 +68,21 @@ class Teach(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         if instance.user_type == 1:
-            Admin.objects.create(admin=instance)
+            Admin.objects.create(admin=instance, id=instance.user_id)
         if instance.user_type == 2:
-            Staff.objects.create(admin=instance)
+            Staff.objects.create(admin=instance, id=instance.user_id)
         if instance.user_type == 3:
-            Student.objects.create(admin=instance)
+            Student.objects.create(admin=instance, id=instance.user_id)
 
 
 @receiver(post_save, sender=CustomUser)
 def save_suer_profile(sender, instance, **kwargs):
     if instance.user_type == 1:
+        instance.admin.id = instance.admin.admin_id
         instance.admin.save()
     if instance.user_type == 2:
+        instance.staff.id = instance.staff.admin_id
         instance.staff.save()
     if instance.user_type == 3:
+        instance.student.id = instance.student.admin_id
         instance.student.save()

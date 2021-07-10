@@ -76,10 +76,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'school',  # 数据库名字(需要先创建)
-        'USER': 'sasuke',  # 登录用户名
+        # 'USER': 'sasuke',  # 登录用户名
+        'USER': 'yuxi',
         'PASSWORD': 'OpenGauss@123',  # 密码
-        'HOST': '116.63.174.13',  # 数据库IP地址,留空默认为localhost
-        'PORT': '15432',  # 端口
+        # 'HOST': '116.63.174.13',  # 数据库IP地址,留空默认为localhost
+        'HOST': 'localhost',
+        'PORT': '5432',
+        # 'PORT': '15432',  # 端口
     }
 }
 
@@ -122,6 +125,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 AUTH_USER_MODEL = "StudentManagementApp.CustomUser"
+AUTHENTICATION_BACKENDS=['StudentManagementApp.UserBackEnd.UserBackEnd']
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

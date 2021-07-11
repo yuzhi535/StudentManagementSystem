@@ -6,11 +6,12 @@ from django.dispatch import receiver
 
 
 class CustomUser(AbstractUser):
-    user_id = models.CharField(primary_key=True, max_length=255)
+    user_id = models.CharField(primary_key=True, max_length=255, verbose_name='用户ID')
     phone_number = models.IntegerField(verbose_name='手机号')
     in_school_time = models.DateTimeField(auto_now_add=True)
     user_type_data = ((1, "Admin"), (2, "Staff"), (3, "Student"))
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
+    REQUIRED_FIELDS = ['user_id', 'phone_number', 'email']
 
 
 # Create your models here.
@@ -24,6 +25,10 @@ class Student(models.Model):
 
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = '学生'
+        verbose_name_plural = '学生'
 
     def __str__(self):
         return self.admin.username
@@ -40,6 +45,10 @@ class Staff(models.Model):
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = '教员'
+        verbose_name_plural = '教员'
+
 
 class Admin(models.Model):
     id = models.CharField(primary_key=True, max_length=255, verbose_name='学号')
@@ -52,10 +61,18 @@ class Admin(models.Model):
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = '教务处'
+        verbose_name_plural = '教务处'
+
 
 class Course(models.Model):
-    name = models.CharField(max_length=255, verbose_name='课程名称', name='课程名称')
+    name = models.CharField(max_length=255, verbose_name='课程名称')
     credit = models.IntegerField(verbose_name='学分')
+
+    class Meta:
+        verbose_name = '课程'
+        verbose_name_plural = "课程"
 
 
 class Study(models.Model):
@@ -63,10 +80,18 @@ class Study(models.Model):
     course_id = models.ManyToManyField(Course)
     score = models.IntegerField()
 
+    class Meta:
+        verbose_name = '修习'
+        verbose_name_plural = '修习'
+
 
 class Teach(models.Model):
     stu_id = models.ManyToManyField(Student)
     staff_id = models.ManyToManyField(Staff)
+
+    class Meta:
+        verbose_name = '教学'
+        verbose_name_plural = '教学'
 
 
 @receiver(post_save, sender=CustomUser)

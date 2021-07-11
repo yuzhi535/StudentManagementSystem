@@ -17,5 +17,10 @@ urlpatterns = [
     path('adminHome/addStu/', views.adminAddStu, name='adminAddStu'),
     path('adminHome/addStu/complete/', views.adminComStu, name='completeAddStu'),
     path('adminHome/addCourse/', views.adminAddCourse, name='addCourse'),
-    path('adminHome/addStaff/', views.adminAddStaff, name='addStaff')
+    path('adminHome/addCourse/complete/', views.adminComCourse, name='completeAddCourse'),
+    path('adminHome/addStaff/', views.adminAddStaff, name='addStaff'),
+    path('adminHome/addStaff/complete/', views.adminComStaff, name='completeAddStaff'),
+    path('adminHome/manageCourse', views.adminMgrCourse, name='manageCourse'),
+    path('adminHome/manageStu', views.adminMgrStu, name='manageStu'),
+    path('staffHome/', views.staffHome, name='staffHome'),
 ]

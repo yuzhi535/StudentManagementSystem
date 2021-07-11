@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>模板 - 教务处教务管理系统</title>
+    <title>教师 - 教务处教务管理系统</title>
     <meta name="description" content="教务管理系统">
     <link rel="stylesheet" href="{% static "assets/bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet"
@@ -23,18 +23,12 @@
         </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link" href={% url 'adminAddStu' %}><i class="fas fa-user"></i><span>添加学生</span></a>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'manageStu' %}"><i class="fas fa-user"></i><span>管理学生</span></a>
-                </li>
-                <li class="nav-item"><a class="nav-link" href={% url 'addStaff' %}><i
-                        class="fas fa-user"></i><span>添加教员</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user"></i><span>管理教员</span></a>
-                </li>
-                <li class="nav-item"><a class="nav-link" href={% url 'addCourse' %}><i class="fas fa-user"></i><span>添加课程</span></a>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'manageCourse' %}"><i
-                        class="fas fa-user"></i><span>管理课程</span></a>
+                <li class="nav-item"><a class="nav-link" href='#'><i
+                        class="fas fa-user"></i><span>概览</span></a></li>
+                <li class="nav-item"><a class="nav-link" href='#'><i
+                        class="fas fa-user"></i><span>查看学生</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i
+                        class="fas fa-user"></i><span>添加成绩</span></a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-key"></i><span>重设密码</span></a>
                 </li>
@@ -165,7 +159,14 @@
                                                                        href="#"><span
                                     class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img
                                     class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
-                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
+                                        class="dropdown-item" href="#"><i
+                                        class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
+                                        class="dropdown-item" href="#"><i
+                                        class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a
+                                        class="dropdown-item" href="#"><i
+                                        class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href={% url 'logout' %}><i
                                             class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                 </div>

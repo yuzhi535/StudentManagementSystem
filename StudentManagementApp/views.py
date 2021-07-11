@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 
 from StudentManagementApp.UserBackEnd import UserBackEnd
-from StudentManagementApp.models import CustomUser, Course, Study
+from StudentManagementApp.models import CustomUser, Course, Study, StuClass
 
 
 def view_login(request):
@@ -79,8 +79,8 @@ def loadAdmin(request):
 
 
 def adminAddStu(request):
-    courses = Course.objects.all()
-    return render(request, 'adminAddStu.html', {'courses': courses})
+    choices = StuClass.objects.all()
+    return render(request, 'adminAddStu.html', {'choices': choices})
 
 
 def adminComStu(request):
@@ -96,23 +96,25 @@ def adminComStu(request):
         phone = request.POST['phone']
         time = request.POST['time']
         time = parse_date(time)
+        choice = request.POST['choice']
         # 比较时间，不能是将来的时间
         if datetime.datetime(time.year, time.month, time.day) > timezone.now():
             messages.error(request, 'failed!')
         else:
-            try:
-                if len(CustomUser.objects.filter(user_id=user_id)) == 0:
-                    user = CustomUser.objects.create_user(user_id=user_id, username=name, email=email, password=passwd,
-                                                          phone_number=phone, user_type=3, in_school_time=time
-                                                          )
-                    user.student.address = address
-                    user.student.gender = sex
-                    user.save()
-                    messages.success(request, 'success!')
-                else:
-                    messages.error(request, 'failed!')
-            except:
+            # try:
+            if len(CustomUser.objects.filter(user_id=user_id)) == 0:
+                user = CustomUser.objects.create_user(user_id=user_id, username=name, email=email, password=passwd,
+                                                      phone_number=phone, user_type=3, in_school_time=time
+                                                      )
+                user.student.address = address
+                user.student.gender = sex
+                user.student.inClass_id = int(choice)
+                user.save()
+                messages.success(request, 'success!')
+            else:
                 messages.error(request, 'failed!')
+            # except:
+            #     messages.error(request, 'failed!')
         return HttpResponseRedirect('/adminHome/addStu/')
 
 
@@ -178,3 +180,25 @@ def adminMgrStu(request):
 
 def staffHome(request):
     return render(request, 'staffHome.html')
+
+
+def adminAddClass(request):
+    # content = StuClass.objects.all()
+    return render(request, 'adminAddClass.html')
+
+
+def adminComClass(request):
+    if request.method != 'POST':
+        return HttpResponse('method is not allowed')
+
+    id = request.POST['number']
+    name = request.POST['name']
+    try:
+        model = StuClass.objects.create(class_id=id, name=name)
+        model.save()
+
+        messages.success(request, '添加班级成功')
+    except:
+        messages.error(request, '添加班级失败')
+
+    return HttpResponseRedirect(reverse('adminAddClass'))

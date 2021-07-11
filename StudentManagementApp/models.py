@@ -22,6 +22,8 @@ class Student(models.Model):
     # email = models.EmailField()
     # passwd = models.CharField(max_length=255)
     address = models.TextField()
+    # 所在班级
+    inClass = models.ForeignKey('StuClass', on_delete=models.CASCADE)
 
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -75,6 +77,15 @@ class Course(models.Model):
         verbose_name_plural = "课程"
 
 
+class StuClass(models.Model):
+    class_id = models.CharField(primary_key=True, max_length=255)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = '班级'
+        verbose_name_plural = '班级'
+
+
 class Study(models.Model):
     stu_id = models.ManyToManyField(Student)
     course_id = models.ManyToManyField(Course)
@@ -86,7 +97,7 @@ class Study(models.Model):
 
 
 class Teach(models.Model):
-    stu_id = models.ManyToManyField(Student)
+    class_id = models.ManyToManyField(StuClass)
     staff_id = models.ManyToManyField(Staff)
 
     class Meta:

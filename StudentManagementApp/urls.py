@@ -23,4 +23,6 @@ urlpatterns = [
     path('adminHome/manageCourse', views.adminMgrCourse, name='manageCourse'),
     path('adminHome/manageStu', views.adminMgrStu, name='manageStu'),
     path('staffHome/', views.staffHome, name='staffHome'),
+    path('adminHome/addClass/', views.adminAddClass, name='adminAddClass'),
+    path('adminHome/addClass/complete', views.adminComClass, name='completeAddClass'),
 ]

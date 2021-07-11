@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>模板 - 教务处教务管理系统</title>
+    <title>教务处 - 教务处教务管理系统</title>
     <meta name="description" content="教务管理系统">
     <link rel="stylesheet" href="{% static "assets/bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet"
@@ -35,6 +35,12 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'manageCourse' %}"><i
                         class="fas fa-user"></i><span>管理课程</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'adminAddClass' %}"><i
+                        class="fas fa-user"></i><span>添加班级</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#"><i
+                        class="fas fa-user"></i><span>管理班级</span></a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-key"></i><span>重设密码</span></a>
                 </li>

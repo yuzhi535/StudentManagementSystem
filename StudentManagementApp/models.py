@@ -7,6 +7,8 @@ from django.dispatch import receiver
 
 class CustomUser(AbstractUser):
     user_id = models.CharField(primary_key=True, max_length=255)
+    phone_number = models.IntegerField(verbose_name='手机号')
+    in_school_time = models.DateTimeField(auto_now_add=True)
     user_type_data = ((1, "Admin"), (2, "Staff"), (3, "Student"))
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
 
@@ -19,9 +21,12 @@ class Student(models.Model):
     # email = models.EmailField()
     # passwd = models.CharField(max_length=255)
     address = models.TextField()
-    phone_number = models.IntegerField(verbose_name='手机号')
+
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.admin.username
 
 
 class Staff(models.Model):
@@ -31,7 +36,7 @@ class Staff(models.Model):
     # email = models.EmailField()
     # passwd = models.CharField(max_length=255)
     address = models.TextField()
-    phone_number = models.IntegerField(verbose_name='手机号')
+    # phone_number = models.IntegerField(verbose_name='手机号')
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
@@ -43,7 +48,7 @@ class Admin(models.Model):
     # email = models.EmailField()
     # passwd = models.CharField(max_length=255)
     address = models.TextField()
-    phone_number = models.IntegerField(verbose_name='手机号', default=1)
+    # phone_number = models.IntegerField(verbose_name='手机号', default=1)
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 

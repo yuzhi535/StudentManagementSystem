@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>模板 - 教务管理系统</title>
+    <title>模板 - 教务处教务管理系统</title>
     <meta name="description" content="教务管理系统">
     <link rel="stylesheet" href="{% static "assets/bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet"
@@ -23,15 +23,19 @@
         </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>总体情况</span></a>
+                <li class="nav-item"><a class="nav-link" href={% url 'adminAddStu' %}><i class="fas fa-user"></i><span>添加学生</span></a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>概览</span></a>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user"></i><span>管理学生</span></a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="table.html"><i
-                        class="fas fa-table"></i><span>成绩</span></a></li>
-                <li class="nav-item"></li>
-                <li class="nav-item"></li>
-                <li class="nav-item"><a class="nav-link" href="forgot-password.html"><i class="fas fa-key"></i><span>忘记密码</span></a>
+                <li class="nav-item"><a class="nav-link" href="#"><i
+                        class="fas fa-user"></i><span>添加教员</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user"></i><span>管理教员</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href={% url 'addCourse' %}><i class="fas fa-user"></i><span>添加课程</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user"></i><span>管理课程</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-key"></i><span>重设密码</span></a>
                 </li>
                 <li class="nav-item"></li>
                 <li class="nav-item"></li>
@@ -178,13 +182,13 @@
             </nav>
             <div class="container-fluid"><h3 class="text-dark mb-1">
                 {% block main_content %}
-
+                    z
                 {% endblock %}
             </h3></div>
         </div>
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © zyx 021</span></div>
+                <div class="text-center my-auto copyright"><span>Copyright © zyx 2021</span></div>
             </div>
         </footer>
     </div>

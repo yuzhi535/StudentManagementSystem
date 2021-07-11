@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>面板 - 教务管理系统</title>
     <meta name="description" content="教务管理系统">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static "assets/bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="{% static "assets/fonts/fontawesome-all.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/fonts/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/fonts/fontawesome5-overrides.min.css" %}">
 </head>
 <body id="page-top">
 <div id="wrapper">
@@ -22,15 +23,17 @@
         </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link active" href="index.html"><i
+                <li class="nav-item"><a class="nav-link active" href={% url 'index' %}><i
                         class="fas fa-tachometer-alt"></i><span>总体情况</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>概览</span></a>
+                <li class="nav-item"><a class="nav-link" href= {% url 'home' %}><i
+                        class="fas fa-user"></i><span>概览</span></a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="table.html"><i
                         class="fas fa-table"></i><span>成绩</span></a></li>
                 <li class="nav-item"></li>
                 <li class="nav-item"></li>
-                <li class="nav-item"><a class="nav-link" href="forgot-password.html"><i class="fas fa-key"></i><span>忘记密码</span></a>
+                <li class="nav-item"><a class="nav-link" href={% url 'forget' %}><i
+                        class="fas fa-key"></i><span>重设密码</span></a>
                 </li>
                 <li class="nav-item"></li>
                 <li class="nav-item"></li>
@@ -293,98 +296,98 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 mb-4">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3"><h6 class="text-primary fw-bold m-0">Projects</h6></div>
-                            <div class="card-body"><h4 class="small fw-bold">Server migration<span
-                                    class="float-end">20%</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar bg-danger" aria-valuenow="20" aria-valuemin="0"
-                                         aria-valuemax="100" style="width: 20%;"><span
-                                            class="visually-hidden">20%</span></div>
-                                </div>
-                                <h4 class="small fw-bold">Sales tracking<span class="float-end">40%</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar bg-warning" aria-valuenow="40" aria-valuemin="0"
-                                         aria-valuemax="100" style="width: 40%;"><span
-                                            class="visually-hidden">40%</span></div>
-                                </div>
-                                <h4 class="small fw-bold">Customer Database<span class="float-end">60%</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar bg-primary" aria-valuenow="60" aria-valuemin="0"
-                                         aria-valuemax="100" style="width: 60%;"><span
-                                            class="visually-hidden">60%</span></div>
-                                </div>
-                                <h4 class="small fw-bold">Payout Details<span class="float-end">80%</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar bg-info" aria-valuenow="80" aria-valuemin="0"
-                                         aria-valuemax="100" style="width: 80%;"><span
-                                            class="visually-hidden">80%</span></div>
-                                </div>
-                                <h4 class="small fw-bold">Account setup<span class="float-end">Complete!</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar bg-success" aria-valuenow="100" aria-valuemin="0"
-                                         aria-valuemax="100" style="width: 100%;"><span
-                                            class="visually-hidden">100%</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card shadow mb-4">
-                            <ul class="list-group list-group-flush"></ul>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="row">
-                            <div class="col-lg-6 mb-4">
-                                <div class="card textwhite bg-primary text-white shadow">
-                                    <div class="card-body"><p class="m-0">Primary</p>
-                                        <p class="text-white-50 small m-0">#4e73df</p></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="card textwhite bg-success text-white shadow">
-                                    <div class="card-body"><p class="m-0">Success</p>
-                                        <p class="text-white-50 small m-0">#1cc88a</p></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="card textwhite bg-info text-white shadow">
-                                    <div class="card-body"><p class="m-0">Info</p>
-                                        <p class="text-white-50 small m-0">#36b9cc</p></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="card textwhite bg-warning text-white shadow">
-                                    <div class="card-body"><p class="m-0">Warning</p>
-                                        <p class="text-white-50 small m-0">#f6c23e</p></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="card textwhite bg-danger text-white shadow">
-                                    <div class="card-body"><p class="m-0">Danger</p>
-                                        <p class="text-white-50 small m-0">#e74a3b</p></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="card textwhite bg-secondary text-white shadow">
-                                    <div class="card-body"><p class="m-0">Secondary</p>
-                                        <p class="text-white-50 small m-0">#858796</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {#                    <div class="col-lg-6 mb-4">#}
+                    {#                        <div class="card shadow mb-4">#}
+                    {#                            <div class="card-header py-3"><h6 class="text-primary fw-bold m-0">Projects</h6></div>#}
+                    {#                            <div class="card-body"><h4 class="small fw-bold">Server migration<span#}
+                    {#                                    class="float-end">20%</span></h4>#}
+                    {#                                <div class="progress mb-4">#}
+                    {#                                    <div class="progress-bar bg-danger" aria-valuenow="20" aria-valuemin="0"#}
+                    {#                                         aria-valuemax="100" style="width: 20%;"><span#}
+                    {#                                            class="visually-hidden">20%</span></div>#}
+                    {#                                </div>#}
+                    {#                                <h4 class="small fw-bold">Sales tracking<span class="float-end">40%</span></h4>#}
+                    {#                                <div class="progress mb-4">#}
+                    {#                                    <div class="progress-bar bg-warning" aria-valuenow="40" aria-valuemin="0"#}
+                    {#                                         aria-valuemax="100" style="width: 40%;"><span#}
+                    {#                                            class="visually-hidden">40%</span></div>#}
+                    {#                                </div>#}
+                    {#                                <h4 class="small fw-bold">Customer Database<span class="float-end">60%</span></h4>#}
+                    {#                                <div class="progress mb-4">#}
+                    {#                                    <div class="progress-bar bg-primary" aria-valuenow="60" aria-valuemin="0"#}
+                    {#                                         aria-valuemax="100" style="width: 60%;"><span#}
+                    {#                                            class="visually-hidden">60%</span></div>#}
+                    {#                                </div>#}
+                    {#                                <h4 class="small fw-bold">Payout Details<span class="float-end">80%</span></h4>#}
+                    {#                                <div class="progress mb-4">#}
+                    {#                                    <div class="progress-bar bg-info" aria-valuenow="80" aria-valuemin="0"#}
+                    {#                                         aria-valuemax="100" style="width: 80%;"><span#}
+                    {#                                            class="visually-hidden">80%</span></div>#}
+                    {#                                </div>#}
+                    {#                                <h4 class="small fw-bold">Account setup<span class="float-end">Complete!</span></h4>#}
+                    {#                                <div class="progress mb-4">#}
+                    {#                                    <div class="progress-bar bg-success" aria-valuenow="100" aria-valuemin="0"#}
+                    {#                                         aria-valuemax="100" style="width: 100%;"><span#}
+                    {#                                            class="visually-hidden">100%</span></div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                        <div class="card shadow mb-4">#}
+                    {#                            <ul class="list-group list-group-flush"></ul>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    {#                    <div class="col">#}
+                    {#                        <div class="row">#}
+                    {#                            <div class="col-lg-6 mb-4">#}
+                    {#                                <div class="card textwhite bg-primary text-white shadow">#}
+                    {#                                    <div class="card-body"><p class="m-0">Primary</p>#}
+                    {#                                        <p class="text-white-50 small m-0">#4e73df</p></div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                            <div class="col-lg-6 mb-4">#}
+                    {#                                <div class="card textwhite bg-success text-white shadow">#}
+                    {#                                    <div class="card-body"><p class="m-0">Success</p>#}
+                    {#                                        <p class="text-white-50 small m-0">#1cc88a</p></div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                            <div class="col-lg-6 mb-4">#}
+                    {#                                <div class="card textwhite bg-info text-white shadow">#}
+                    {#                                    <div class="card-body"><p class="m-0">Info</p>#}
+                    {#                                        <p class="text-white-50 small m-0">#36b9cc</p></div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                            <div class="col-lg-6 mb-4">#}
+                    {#                                <div class="card textwhite bg-warning text-white shadow">#}
+                    {#                                    <div class="card-body"><p class="m-0">Warning</p>#}
+                    {#                                        <p class="text-white-50 small m-0">#f6c23e</p></div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                            <div class="col-lg-6 mb-4">#}
+                    {#                                <div class="card textwhite bg-danger text-white shadow">#}
+                    {#                                    <div class="card-body"><p class="m-0">Danger</p>#}
+                    {#                                        <p class="text-white-50 small m-0">#e74a3b</p></div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                            <div class="col-lg-6 mb-4">#}
+                    {#                                <div class="card textwhite bg-secondary text-white shadow">#}
+                    {#                                    <div class="card-body"><p class="m-0">Secondary</p>#}
+                    {#                                        <p class="text-white-50 small m-0">#858796</p></div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
                 </div>
             </div>
         </div>
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © zyx 021</span></div>
+                <div class="text-center my-auto copyright"><span>Copyright © zyx 2021</span></div>
             </div>
         </footer>
     </div>
     <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/chart.min.js"></script>
-<script src="assets/js/script.min.js"></script>
+<script src="{% static "assets/bootstrap/js/bootstrap.min.js" %}"></script>
+<script src="{% static "assets/js/chart.min.js" %}"></script>
+<script src="{% static "assets/js/script.min.js" %}"></script>
 </body>
 </html>

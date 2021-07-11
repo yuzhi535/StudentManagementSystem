@@ -25,4 +25,6 @@ urlpatterns = [
     path('staffHome/', views.staffHome, name='staffHome'),
     path('adminHome/addClass/', views.adminAddClass, name='adminAddClass'),
     path('adminHome/addClass/complete', views.adminComClass, name='completeAddClass'),
+    path('adminHome/ManageStaff', views.adminMgrStaff, name='adminMgrStaff'),
+    # path('adminHome/ManageStaff/manage/<int:pk>', views.AdminStaffMgrView.as_view(), name='adminStaffMgr'),
 ]

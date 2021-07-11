@@ -9,9 +9,11 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from django.views import generic
+from django.views.generic import ListView
 
 from StudentManagementApp.UserBackEnd import UserBackEnd
-from StudentManagementApp.models import CustomUser, Course, Study, StuClass
+from StudentManagementApp.models import CustomUser, Course, Study, StuClass, Staff, Teach, Student
 
 
 def view_login(request):
@@ -97,12 +99,12 @@ def adminComStu(request):
         time = request.POST['time']
         time = parse_date(time)
         choice = request.POST['choice']
-        # 比较时间，不能是将来的时间
-        if datetime.datetime(time.year, time.month, time.day) > timezone.now():
-            messages.error(request, 'failed!')
-        else:
-            # try:
-            if len(CustomUser.objects.filter(user_id=user_id)) == 0:
+
+        try:
+            # 比较时间，不能是将来的时间
+            if datetime.datetime(time.year, time.month, time.day) > timezone.now():
+                messages.error(request, 'failed!')
+            elif len(CustomUser.objects.filter(user_id=user_id)) == 0:
                 user = CustomUser.objects.create_user(user_id=user_id, username=name, email=email, password=passwd,
                                                       phone_number=phone, user_type=3, in_school_time=time
                                                       )
@@ -113,9 +115,9 @@ def adminComStu(request):
                 messages.success(request, 'success!')
             else:
                 messages.error(request, 'failed!')
-            # except:
-            #     messages.error(request, 'failed!')
-        return HttpResponseRedirect('/adminHome/addStu/')
+        except:
+            messages.error(request, 'failed!')
+    return HttpResponseRedirect('/adminHome/addStu/')
 
 
 def adminAddCourse(request):
@@ -175,7 +177,8 @@ def adminMgrCourse(request):
 
 
 def adminMgrStu(request):
-    return render(request, 'adminMgrStu.html')
+    content = Student.objects.all()
+    return render(request, 'adminMgrStu.html', {'students': content})
 
 
 def staffHome(request):
@@ -198,7 +201,25 @@ def adminComClass(request):
         model.save()
 
         messages.success(request, '添加班级成功')
-    except:
+    except Exception as e:
         messages.error(request, '添加班级失败')
 
     return HttpResponseRedirect(reverse('adminAddClass'))
+
+
+# todo 教务处管理界面上，管理教员页面即罗列教员，其中可点击到某个具体教员身上，然后对他安排到教某个班某个课程
+# todo 重设密码
+# todo 教务处页面罗列班级、教员、学生
+
+def adminMgrStaff(request):
+    content = Staff.objects.all()
+    return render(request, 'adminMgrStaff.html', {'staffs': content})
+
+
+class AdminStaffMgrView(generic.ListView):
+    template_name = 'adminStaffMgr.html'
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        staff = Staff.objects.get(pk=pk)
+        return staff.teach_set.all()

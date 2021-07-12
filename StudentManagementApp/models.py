@@ -23,7 +23,7 @@ class Student(models.Model):
     # passwd = models.CharField(max_length=255)
     address = models.TextField()
     # 所在班级
-    inClass = models.ForeignKey('StuClass', on_delete=models.CASCADE)
+    inClass = models.ForeignKey('StuClass', on_delete=models.CASCADE, null=True, blank=True)
 
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -97,8 +97,8 @@ class Study(models.Model):
 
 
 class Teach(models.Model):
-    class_id = models.ManyToManyField(StuClass)
-    staff_id = models.ManyToManyField(Staff)
+    stuClass = models.ManyToManyField(StuClass)
+    staff = models.ManyToManyField(Staff)
 
     class Meta:
         verbose_name = '教学'

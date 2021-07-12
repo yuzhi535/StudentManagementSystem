@@ -1,12 +1,12 @@
 {% extends 'base_template/adminBase.html' %}
 {% block main_content %}
     <div class="card shadow">
-        <div class="card-header py-3"><p class="text-primary m-0 fw-bold">管理信息</p></div>
+        <div class="card-header py-3"><p class="text-primary m-0 fw-bold">{{ contents.1 }}</p></div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 text-nowrap">
                     <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label
-                            class="form-label">显示<select
+                            class="form-label">管理<select
                             class="d-inline-block form-select form-select-sm">
                         <option value="10" selected="">10</option>
                         <option value="25">25</option>
@@ -26,58 +26,63 @@
                 <table class="table text-nowrap table-hover" id="dataTable">
                     <thead>
                     <tr>
-                        <th>教师编号</th>
-                        <th>教师名称</th>
+                        <th>班级</th>
+                        <th>课程</th>
                         <th>管理</th>
-                        {#                        <th>教师性别</th>#}
-                        {#                        <th>阿斯顿发</th>#}
-                        {#                        <th>学年学期</th>#}
-                        {#                        <th>绩点</th>#}
                     </tr>
                     </thead>
                     <tbody>
-                    {% for staff in staffs %}
-                        <td>{{ staff.id }}</td>
-                        <td>{{ staff.admin.username }}</td>
-                        <th><a href="#" class="active">操作</a></th>
+                    {# 妈的，五层for循环，我感觉我不该整这么规范的表 #}
+                    {% for teach in contents.0 %}
+                        {% for name in teach.stuClass.all %}
+                            {% for course in name.student_set.all %}
+                                {% for coursenames in course.study_set.all %}
+                                    {% for coursename in coursenames.course_id.all %}
+                                        <tr class="table-responsive-sm table-light" style="font-size: 20px">
+                                            <td>{{ name.name }}</td>
+                                            <td>{{ coursename.name }}</td>
+                                            <th><a href="#" class="active">操作</a></th>
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
                     {% endfor %}
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <td><strong>教师编号</strong></td>
-                        <td><strong>教师名称</strong></td>
-                        <td><strong>管理</strong></td>
-                        {#                        <td><strong>最终成绩</strong></td>#}
-                        {#                        <td><strong>学年学期</strong></td>#}
-                        {#                        <td><strong>绩点</strong></td>#}
-                    </tr>
-                    </tfoot>
+                    {#                    <tfoot>#}
+                    {#                    <tr>#}
+                    {#                        <td><strong>班级</strong></td>#}
+                    {#                        <td><strong>课程</strong></td>#}
+                    {#                        <td><strong>管理</strong></td>#}
+                    {#                    </tr>#}
+                    {#                    </tfoot>#}
                 </table>
             </div>
-            <div class="row">
-                <div class="col-md-6 align-self-center"><p id="dataTable_info" class="dataTables_info"
-                                                           role="status" aria-live="polite">Showing 1 to 10
-                    of {{ staffs.count }}</p></div>
-                <div class="col-md-6">
-                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                        <ul class="pagination">
-                            {% for page in staffs %}
-                                <li class="page-item active"><a href="#" class="page-link">{{ forloop.counter }}</a>
-                                </li>
-                                {#                            <li class="page-item disabled"><a class="page-link" href="#"#}
-                                {#                                                              aria-label="Previous"><span#}
-                                {#                                    aria-hidden="true">«</span></a></li>#}
-                                {#                            <li class="page-item active"><a class="page-link" href="#">1</a></li>#}
-                                {#                            <li class="page-item"><a class="page-link" href="#">2</a></li>#}
-                                {#                            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
-                                {#                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span#}
-                                {#                                    aria-hidden="true">»</span></a></li>#}
-                            {% endfor %}
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            {#            <div class="row">#}
+            {#                <div class="col-md-6 align-self-center"><p id="dataTable_info" class="dataTables_info"#}
+            {#                                                           role="status" aria-live="polite">Showing 1 to#}
+            {#                    {{ contents.0.count }}#}
+            {#                    of {{ contents.0.count }}</p></div>#}
+            {#                <div class="col-md-6">#}
+            {#                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">#}
+            {#                        <ul class="pagination">#}
+            {#                            {% for page in staffs %}#}
+            {#                                <li class="page-item active"><a href="#" class="page-link">{{ forloop.counter }}</a>#}
+            {#                                </li>#}
+            {#                            <li class="page-item disabled"><a class="page-link" href="#"#}
+            {#                                                              aria-label="Previous"><span#}
+            {#                                    aria-hidden="true">«</span></a></li>#}
+            {#                            <li class="page-item active"><a class="page-link" href="#">1</a></li>#}
+            {#                            <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+            {#                            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+            {#                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span#}
+            {#                                    aria-hidden="true">»</span></a></li>#}
+            {#                            {% endfor %}#}
+            {#                        </ul>#}
+            {#                    </nav>#}
+            {#                </div>#}
+            {#            </div>#}
+            {#        </div>#}
         </div>
-    </div>
 
 {% endblock main_content %}

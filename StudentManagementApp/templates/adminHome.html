@@ -11,7 +11,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form" action="#" method="post">
+                        <form role="form" action="{% url 'reset' name=user.username %}" method="post">
                             {% csrf_token %}
                             <div class="card-body">
                                 <div class="form-group">
@@ -24,36 +24,36 @@
                                     <input type="text" class="form-control" name="username" value="{{ user.email }}"
                                            disabled="disabled">
                                 </div>
-                                <div class="form-group">
-                                    <label>你的名字</label>
-                                    <input type="text" class="form-control" name="name"
-                                           value="{{ user.last_name }}">
-                                </div>
-                                <div class="form-group">
-                                    <label>更改密码?</label>
-                                    <input type="text" class="form-control" name="password"
-                                           placeholder="Fill Only If You want to Change Password">
-                                </div>
-                                <div class="form-group">
-                                    {% if messages %}
-                                        {% for message in messages %}
-                                            {% if message.tags == 'error' %}
-                                                <div class="alert alert-danger"
-                                                     style="margin-top:10px">{{ message }}</div>
-                                            {% endif %}
-                                            {% if message.tags == 'success' %}
-                                                <div class="alert alert-success"
-                                                     style="margin-top:10px">{{ message }}</div>
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
+                                {#                                <div class="form-group">#}
+                                {#                                    <label>你的名字</label>#}
+                                {#                                    <input type="text" class="form-control" name="name"#}
+                                {#                                           value="{{ user.last_name }}">#}
+                                {#                                </div>#}
+                                {#                                <div class="form-group">#}
+                                {#                                    <label>更改密码?</label>#}
+                                {#                                    <input type="text" class="form-control" name="password"#}
+                                {#                                           placeholder="Fill Only If You want to Change Password">#}
+                                {#                                </div>#}
+                                {#                                <div class="form-group">#}
+                                {#                                    {% if messages %}#}
+                                {#                                        {% for message in messages %}#}
+                                {#                                            {% if message.tags == 'error' %}#}
+                                {#                                                <div class="alert alert-danger"#}
+                                {#                                                     style="margin-top:10px">{{ message }}</div>#}
+                                {#                                            {% endif %}#}
+                                {#                                            {% if message.tags == 'success' %}#}
+                                {#                                                <div class="alert alert-success"#}
+                                {#                                                     style="margin-top:10px">{{ message }}</div>#}
+                                {#                                            {% endif %}#}
+                                {#                                        {% endfor %}#}
+                                {#                                    {% endif %}#}
+                                {#                                </div>#}
 
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary btn-block">Save Profile</button>
+                                <button type="submit" class="btn btn-primary btn-block">更改密码</button>
                             </div>
                         </form>
                     </div>

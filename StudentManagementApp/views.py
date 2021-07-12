@@ -1,9 +1,11 @@
 import datetime
+import json
 
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+import requests
 
 # Create your views here.
 from django.urls import reverse
@@ -32,6 +34,18 @@ def doLogin(request):
     if request.method != 'POST':
         return HttpResponse('now allowed')
     else:
+        # 谷歌验证
+        captcha_token = request.POST.get("g-recaptcha-response")
+        print(f'captcha_token = {captcha_token}')
+        cap_url = "https://www.google.com/recaptcha/api/siteverify"
+        cap_secret = '6LeH_40bAAAAAODsq20WVtf2veH8agognlCcjAY1'
+        cap_data = {"secret": cap_secret, "response": captcha_token}
+        cap_server_response = requests.post(url=cap_url, data=cap_data)
+        cap_json = json.loads(cap_server_response.text)
+        if cap_json['success'] == False:
+            messages.error(request, '请证明您是人类')
+            return HttpResponseRedirect("/")
+
         user = UserBackEnd.authenticate(request, request.POST['number'], request.POST['password'])
         if user is not None:
             login(request, user)
@@ -47,7 +61,7 @@ def doLogin(request):
             return HttpResponseRedirect("/")
 
 
-def forgetPassword(request):
+def resetPassword(request):
     return render(request, 'forgot-password.html')
 
 
@@ -173,7 +187,8 @@ def adminComStaff(request):
 
 
 def adminMgrCourse(request):
-    return render(request, 'adminMgrCourse.html')
+    content = Course.objects.all()
+    return render(request, 'adminMgrCourse.html', {'courses': content})
 
 
 def adminMgrStu(request):
@@ -218,8 +233,17 @@ def adminMgrStaff(request):
 
 class AdminStaffMgrView(generic.ListView):
     template_name = 'adminStaffMgr.html'
+    context_object_name = 'contents'
 
     def get_queryset(self):
         pk = self.kwargs['pk']
         staff = Staff.objects.get(pk=pk)
-        return staff.teach_set.all()
+        return staff.teach_set.all(), staff.admin.username
+
+
+class AdminCourseMgrView(generic.ListView):
+    model = Course
+    context_object_name = 'courses'
+
+    def get_queryset(self):
+        return Course.objects.all()

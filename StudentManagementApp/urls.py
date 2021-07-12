@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.view_login, name='login'),
     path('register/', views.view_register),
     path('doLogin/', views.doLogin, name='doLogin'),
-    path('home/forgot-password.html', views.forgetPassword, name='forget'),
+    path('forgot-password/<str:name>', views.resetPassword, name='reset'),
     path('home/', views.loadHome, name='home'),
     path('home/table.html', views.loadTable, name='table'),
     path('home/logout/', views.doLogout, name='logout'),
@@ -26,5 +26,7 @@ urlpatterns = [
     path('adminHome/addClass/', views.adminAddClass, name='adminAddClass'),
     path('adminHome/addClass/complete', views.adminComClass, name='completeAddClass'),
     path('adminHome/ManageStaff', views.adminMgrStaff, name='adminMgrStaff'),
-    # path('adminHome/ManageStaff/manage/<int:pk>', views.AdminStaffMgrView.as_view(), name='adminStaffMgr'),
+    path('adminHome/ManageStaff/manage/<int:pk>', views.AdminStaffMgrView.as_view(), name='adminStaffMgr'),
+    path('adminHOme/manageCourse/manage/int:pk', views.AdminCourseMgrView.as_view(), name='adminCourseMgr'),
+    # path('')
 ]

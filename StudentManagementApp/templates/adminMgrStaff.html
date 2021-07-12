@@ -24,7 +24,7 @@
             </div>
             <div class="table-responsive table mt-2" id="dataTable" role="grid"
                  aria-describedby="dataTable_info">
-                <table class="table my-0" id="dataTable">
+                <table class="table my-0 table-bordered" id="dataTable">
                     <thead>
                     <tr>
                         <th>教师编号</th>
@@ -38,46 +38,49 @@
                     </thead>
                     <tbody>
                     {% for staff in staffs %}
-                        <td>{{ staff.id }}</td>
-                        <td>{{ staff.admin.username }}</td>
-                        <th><a href="{% url 'adminStaffMgr' forloop.counter %}">管理</a></th>
+                        <tr class="table-responsive-sm table-light" style="font-size: 20px">
+                            <td>{{ staff.id }}</td>
+                            <td>{{ staff.admin.username }}</td>
+                            <th><a href="{% url 'adminStaffMgr' staff.id %}">管理</a></th>
+                        </tr>
+
                     {% endfor %}
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <td><strong>教师编号</strong></td>
-                        <td><strong>教师名称</strong></td>
-                        <td><strong>管理</strong></td>
-                        {#                        <td><strong>最终成绩</strong></td>#}
-                        {#                        <td><strong>学年学期</strong></td>#}
-                        {#                        <td><strong>绩点</strong></td>#}
-                    </tr>
-                    </tfoot>
+                    {#                    <tfoot>#}
+                    {#                    <tr>#}
+                    {#                        <td><strong>教师编号</strong></td>#}
+                    {#                        <td><strong>教师名称</strong></td>#}
+                    {#                        <td><strong>管理</strong></td>#}
+                    {#                        <td><strong>最终成绩</strong></td>#}
+                    {#                        <td><strong>学年学期</strong></td>#}
+                    {#                        <td><strong>绩点</strong></td>#}
+                    {#                    </tr>#}
+                    {#                    </tfoot>#}
                 </table>
             </div>
-            <div class="row">
-                <div class="col-md-6 align-self-center"><p id="dataTable_info" class="dataTables_info"
-                                                           role="status" aria-live="polite">Showing 1 to 10
-                    of {{ staffs.count }}</p></div>
-                <div class="col-md-6">
-                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                        <ul class="pagination">
-                            {% for page in staffs %}
-                                <li class="page-item active"><a href="#" class="page-link">{{ forloop.counter }}</a>
-                                </li>
-                                {#                            <li class="page-item disabled"><a class="page-link" href="#"#}
-                                {#                                                              aria-label="Previous"><span#}
-                                {#                                    aria-hidden="true">«</span></a></li>#}
-                                {#                            <li class="page-item active"><a class="page-link" href="#">1</a></li>#}
-                                {#                            <li class="page-item"><a class="page-link" href="#">2</a></li>#}
-                                {#                            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
-                                {#                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span#}
-                                {#                                    aria-hidden="true">»</span></a></li>#}
-                            {% endfor %}
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            {#            <div class="row">#}
+            {#                <div class="col-md-6 align-self-center"><p id="dataTable_info" class="dataTables_info"#}
+            {#                                                           role="status" aria-live="polite">Showing 1 to 10#}
+            {#                    of {{ staffs.count }}</p></div>#}
+            {#                <div class="col-md-6">#}
+            {#                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">#}
+            {#                        <ul class="pagination">#}
+            {#                            {% for page in staffs %}#}
+            {#                                <li class="page-item active"><a href="#" class="page-link">{{ forloop.counter }}</a>#}
+            {#                                </li>#}
+            {#                            <li class="page-item disabled"><a class="page-link" href="#"#}
+            {#                                                              aria-label="Previous"><span#}
+            {#                                    aria-hidden="true">«</span></a></li>#}
+            {#                            <li class="page-item active"><a class="page-link" href="#">1</a></li>#}
+            {#                            <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+            {#                            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+            {#                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span#}
+            {#                                    aria-hidden="true">»</span></a></li>#}
+            {#                            {% endfor %}#}
+            {#                        </ul>#}
+            {#                    </nav>#}
+            {#                </div>#}
+            {#            </div>#}
         </div>
     </div>
 {% endblock main_content %}

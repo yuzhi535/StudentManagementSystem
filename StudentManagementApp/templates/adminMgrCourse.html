@@ -23,22 +23,22 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
+                            <table class="table table-hover text-nowrap table-bordered">
                                 <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>课程名</th>
-                                    <th>学分</th>
-                                    <th>操作</th>
+                                <tr style="font-size: 30px">
+                                    <th style="font-size: 25px">ID</th>
+                                    <th style="font-size: 25px">课程名</th>
+                                    <th style="font-size: 25px">学分</th>
+                                    <th style="font-size: 25px">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for course in courses %}
-                                    <tr>
+                                    <tr class="table-responsive-sm table-light" style="font-size: 20px; ">
                                         <td>{{ course.id }}</td>
                                         <td>{{ course.name }}</td>
                                         <td>{{ course.credit }}</td>
-                                        <td><a href="/edit_course/{{ course.id }}" class="btn btn-success">Edit</a></td>
+                                        <td><a href="#" class="btn btn-danger">删除</a></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

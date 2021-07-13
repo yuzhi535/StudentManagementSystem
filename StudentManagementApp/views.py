@@ -73,9 +73,9 @@ def loadHome(request):
 
 def loadTable(request, id):
     student = Student.objects.get(pk=id)
-    scores = [score.score for score in student.study_set.all()]
+    studies = student.study_set.all()
 
-    return render(request, 'table.html', {'scores': scores, 'student': student})
+    return render(request, 'table.html', {'studies': studies})
 
 
 def doLogout(request):
@@ -281,7 +281,7 @@ def reset(request):
         return HttpResponseRedirect(reverse('resetPassword', kwargs={'name': name}))
     else:
         user = CustomUser.objects.filter(username=name)[0]
-        user.get_password()
+        user.set_password(raw_password=password)
         user.save()
         return HttpResponseRedirect(reverse('login'))
 
@@ -354,3 +354,56 @@ def adminComMgrStaff(request, id):
     stuClass = StuClass.objects.all()
     return render(request, 'adminStaffMgr.html',
                   {'username': username, 'courses': courses, 'stuClass': stuClass, 'staff': staff})
+
+
+def staffAboutStu(request, id):
+    staff = Staff.objects.get(pk=id)
+    return render(request, 'staffAboutStu.html', {'staff': staff})
+
+
+def staffEditStu(request, id):
+    staff = Staff.objects.get(pk=id)
+    return render(request, 'staffEditStu.html', {'staff': staff})
+
+
+def staffAboutMe(request, id):
+    staff = Staff.objects.get(pk=id)
+    return render(request, 'staffAboutMe.html', {'staff': staff})
+
+
+def staffEditScore(request, id, id1, id2, coursename, classname):
+    staff = Staff.objects.get(pk=id2)
+    student = Student.objects.get(pk=id)
+    course = Course.objects.get(pk=id1)
+    return render(request, 'staffEditStuScore.html',
+                  {'staff': staff, 'student': student, 'course': id1, 'coursename': coursename, 'classname': classname})
+
+
+def staffEditStuScore(request):
+    score = request.POST['score']
+    id = request.POST['id']
+    id1 = request.POST['id1']
+    id2 = request.POST['id2']
+    coursename = request.POST['coursename']
+    classname = request.POST['classname']
+    if score == "":
+        messages.error(request, '请输入成绩!')
+        return HttpResponseRedirect(reverse(staffEditScore,
+                                            kwargs={'id': id,
+                                                    'id1': id1, 'id2': id2,
+                                                    'coursename': coursename, 'classname': classname}))
+    score = int(score)
+
+    if score > 100 or score < 0:
+        messages.error(request, '分数必须在0到100之间!')
+        return HttpResponseRedirect(reverse(staffEditScore,
+                                            kwargs={'id': id,
+                                                    'id1': id1, 'id2': id2,
+                                                    'coursename': coursename, 'classname': classname}))
+    student = Student.objects.get(pk=id)
+    course = Course.objects.get(pk=id1)
+    studies = Study.objects.filter(student=student, course=course)
+    for study in studies:
+        study.score = score
+        study.save()
+    return HttpResponseRedirect(reverse(staffAboutStu, kwargs={'id': id2}))

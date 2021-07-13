@@ -1,0 +1,75 @@
+{% extends 'base_template/staffBase.html' %}
+{% load static %}
+{% block main_content %}
+    <div class="card shadow">
+        <div class="card-header py-3"><p class="text-primary m-0 fw-bold">{{ user.username }}</p></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 text-nowrap">
+                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-end dataTables_filter" id="dataTable_filter"></div>
+                </div>
+            </div>
+            <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                 aria-describedby="dataTable_info">
+
+                <form action="{% url 'staffEditStuScore' %}" method="post"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ student.id }}">
+                    <input type="hidden" name="id1" value="{{ course }}">
+                    <input type="hidden" name="id2" value="{{ staff.id }}">
+                    <input type="hidden" name="coursename" value="{{ coursename }}">
+                    <input type="hidden" name="classname" value="{{ classname }}">
+                    <table class="table text-nowrap table-hover table-bordered" id="dataTable">
+                        <thead>
+                        <tr class="text-center">
+                            <th>班级</th>
+                            <th>课程</th>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>修改为</th>
+                        </tr>
+                        </thead>
+                        <tbody align="center">
+                        <tr>
+                            <td>{{ classname }}</td>
+                            <td>{{ coursename }}</td>
+                            <td>{{ student.id }}</td>
+                            <td>{{ student.admin.username }}</td>
+                            <th><input type="number" name="score"></th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="col-12 col-12">
+                        <div class="col-6"></div>
+                        <div class="align-items-center">
+                            <input type="submit" value="确定修改" class="button btn-danger">
+                        </div>
+                    </div>
+
+
+                    <div>
+                        {% if messages %}
+                            <div class="col-12">
+                                {% for message in messages %}
+                                    {% if message.tags == 'error' %}
+                                        <div class="alert alert-danger"
+                                             style="margin-top:10px">{{ message }}</div>
+                                    {% endif %}
+                                    {% if message.tags == 'success' %}
+                                        <div class="alert alert-success"
+                                             style="margin-top:10px">{{ message }}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}

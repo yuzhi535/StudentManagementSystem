@@ -1,0 +1,77 @@
+{% extends 'base_template/staffBase.html' %}
+{% load static %}
+
+{% block main_content %}
+    <div class="card shadow">
+        <div class="card-header py-3"><p class="text-primary m-0 fw-bold">{{ user.username }}</p></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 text-nowrap">
+                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-end dataTables_filter" id="dataTable_filter"></div>
+                </div>
+            </div>
+            <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                 aria-describedby="dataTable_info">
+
+
+                <table class="table text-nowrap table-hover table-bordered" id="dataTable">
+                    <thead>
+                    <tr class="text-center">
+                        <th>班级</th>
+                        <th>课程</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>成绩</th>
+                        <th>修改</th>
+                    </tr>
+                    </thead>
+                    <tbody align="center">
+
+                    {% for courses in staff.courses.all %}
+                        {% for study in courses.study_set.all %}
+                            <td>{{ study.student.inClass.name }}</td>
+                            <td>{{ courses.name }}</td>
+                            <td>{{ study.student.id }}</td>
+                            <td>{{ study.student.admin.username }}</td>
+                            {% if study.score < 0 %}
+                                <td>尚未考试</td>
+                            {% else %}
+                                <td>{{ study.score }}</td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'staffEditScore' id=study.student.id id1=courses.id id2=staff.id coursename=courses.name classname=study.student.inClass.name %}"
+                                   class="btn btn-danger btn-google">修改</a></td>
+                        {% endfor %}
+                        <tr>
+                        </tr>
+                    {% endfor %}
+
+
+                    </tbody>
+                </table>
+
+
+                <div>
+                    {% if messages %}
+                        <div class="col-12">
+                            {% for message in messages %}
+                                {% if message.tags == 'error' %}
+                                    <div class="alert alert-danger"
+                                         style="margin-top:10px">{{ message }}</div>
+                                {% endif %}
+                                {% if message.tags == 'success' %}
+                                    <div class="alert alert-success"
+                                         style="margin-top:10px">{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}

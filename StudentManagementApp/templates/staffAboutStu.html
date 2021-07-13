@@ -1,0 +1,37 @@
+{% extends 'base_template/staffBase.html' %}
+{% load static %}
+
+{% block main_content %}
+    <div class="table-responsive table mt-2" id="dataTable" role="grid"
+         aria-describedby="dataTable_info">
+        <table class="table my-0 table-bordered table-responsive" id="dataTable">
+            <thead class="table-primary" align="center">
+            <tr>
+                <th>班级</th>
+                <th>课程</th>
+                <th>学生</th>
+                <th>成绩</th>
+            </tr>
+            </thead>
+            <tbody align="center">
+            {% for courses in staff.courses.all %}
+                {% for study in courses.study_set.all %}
+                    <td>{{ study.student.inClass.name }}</td>
+                    <td>{{ courses.name }}</td>
+                    <td>{{ study.student.admin.username }}</td>
+                    {% if study.score < 0 %}
+                        <td>尚未考试</td>
+                    {% else %}
+                        <td>{{ study.score }}</td>
+                    {% endif %}
+                {% endfor %}
+                <tr>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock main_content %}

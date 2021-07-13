@@ -34,5 +34,10 @@ urlpatterns = [
     path('adminHome/arrangeCourse/complete', views.adminComArrCourse, name='adminComArrCourse'),
     path('adminHome/ManageStaff/manage/edit/<int:id>/', views.adminComMgrStaff,
          name='adminComMgrStaffEdit'),
-    # path('adminHome/ManageStaff/manage/delete/<int:id>', views.adminComMgrDelMgrStaff, name='adminComMgrDelMgrStaff'),
+    path('staffHome/aboutStu/<int:id>', views.staffAboutStu, name='staffAboutStu'),
+    path('staffHome/editStu/<int:id>', views.staffEditStu, name='staffEditStu'),
+    path('staffHome/about/<int:id>', views.staffAboutMe, name='staffAboutMe'),
+    path('staffHome/editStu/<int:id>/<int:id1>/<int:id2>/coursename=<str:coursename>/classname=<str:classname>',
+         views.staffEditScore, name='staffEditScore'),
+    path('staffHome/edidStu/score/', views.staffEditStuScore, name='staffEditStuScore'),
 ]

@@ -37,23 +37,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for score in scores %}
-                        {% ifnotequal score -1 %}
-                            <tr>
-                                <td>{{ student.study_set.all.0.course_id.all.0.name }}</td>
-                                <td>{{ score }}</td>
+                    {% for study in studies %}
+                        <tr>
+                            {% if study.score > -1 %}
+                                <td>{{ study.course.name }}</td>
+                                <td>{{ study.score }}</td>
                                 <td>
-                                    {% if 90 <= score %}
+                                    {% if 90 <= study.score %}
                                         4
-                                    {% elif 85 <= score %}
+                                    {% elif 85 <= study.score %}
                                         3.7
-                                    {% elif 80 <= score %}
+                                    {% elif 80 <= study.score %}
                                         3.2
                                     {% endif %}
                                 </td>
-                            </tr>
-                        {% endifnotequal %}
+                            {% endif %}
+                        </tr>
                     {% endfor %}
+
                     </tbody>
                 </table>
             </div>

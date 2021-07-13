@@ -15,7 +15,7 @@ from django.views import generic
 from django.views.generic import ListView
 
 from StudentManagementApp.UserBackEnd import UserBackEnd
-from StudentManagementApp.models import CustomUser, Course, Study, StuClass, Staff, Teach, Student
+from StudentManagementApp.models import CustomUser, Course, Study, StuClass, Staff, Student
 
 
 def view_login(request):
@@ -27,7 +27,7 @@ def view_register(request):
 
 
 def view_profile(request):
-    return render(request, 'profile.html')
+    return render(request, 'home.html')
 
 
 def doLogin(request):
@@ -36,7 +36,7 @@ def doLogin(request):
     else:
         # 谷歌验证
         captcha_token = request.POST.get("g-recaptcha-response")
-        print(f'captcha_token = {captcha_token}')
+        # print(f'captcha_token = {captcha_token}')
         cap_url = "https://www.google.com/recaptcha/api/siteverify"
         cap_secret = '6LeH_40bAAAAAODsq20WVtf2veH8agognlCcjAY1'
         cap_data = {"secret": cap_secret, "response": captcha_token}
@@ -61,16 +61,21 @@ def doLogin(request):
             return HttpResponseRedirect("/")
 
 
-def resetPassword(request):
-    return render(request, 'forgot-password.html')
+def resetPassword(request, name):
+    return render(request, 'forgot-password.html', {'name': name})
 
 
 def loadHome(request):
-    return render(request, 'profile.html')
+    grade = int(timezone.now().year)
+    convert = {1: '一', 2: '二', 3: '三', 4: '四'}
+    return render(request, 'home.html', {'now': grade, 'convert': convert})
 
 
-def loadTable(request):
-    return render(request, 'table.html')
+def loadTable(request, id):
+    student = Student.objects.get(pk=id)
+    scores = [score.score for score in student.study_set.all()]
+
+    return render(request, 'table.html', {'scores': scores, 'student': student})
 
 
 def doLogout(request):
@@ -86,8 +91,14 @@ def load404(request):
     return render(request, '404.html')
 
 
-def load_index(request):
-    return render(request, 'index.html')
+def load_index(request, id):
+    now = int(timezone.now().year)
+    student = Student.objects.get(pk=id)
+    scores = student.study_set.all()
+    scores = [score.score for score in scores]
+    score = sum(scores) // len(scores)
+    id = student.id
+    return render(request, 'index.html', {'now': now, 'score': score, 'id': id})
 
 
 def loadAdmin(request):
@@ -124,14 +135,14 @@ def adminComStu(request):
                                                       )
                 user.student.address = address
                 user.student.gender = sex
-                user.student.inClass_id = int(choice)
+                user.student.inClass_id = choice
                 user.save()
                 messages.success(request, 'success!')
             else:
                 messages.error(request, 'failed!')
         except:
             messages.error(request, 'failed!')
-    return HttpResponseRedirect('/adminHome/addStu/')
+        return HttpResponseRedirect('/adminHome/addStu/')
 
 
 def adminAddCourse(request):
@@ -231,14 +242,23 @@ def adminMgrStaff(request):
     return render(request, 'adminMgrStaff.html', {'staffs': content})
 
 
-class AdminStaffMgrView(generic.ListView):
-    template_name = 'adminStaffMgr.html'
-    context_object_name = 'contents'
+# class AdminStaffMgrView(generic.ListView):
+#     template_name = 'adminStaffMgr.html'
+#     context_object_name = 'contents'
+#
+#     def get_queryset(self):
+#         pk = self.kwargs['pk']
+#         staff = Staff.objects.get(pk=pk)
+#         return staff.teach_set.all(), staff.admin.username
 
-    def get_queryset(self):
-        pk = self.kwargs['pk']
-        staff = Staff.objects.get(pk=pk)
-        return staff.teach_set.all(), staff.admin.username
+def AdminStaffMgrView(request, pk):
+    staff = Staff.objects.get(pk=pk)
+    username = staff.admin.username
+    courses = staff.courses.all()
+    stuClass = StuClass.objects.all()
+
+    return render(request, 'adminStaffMgr.html',
+                  {'username': username, 'courses': courses, 'stuClass': stuClass, 'staff': staff})
 
 
 class AdminCourseMgrView(generic.ListView):
@@ -247,3 +267,90 @@ class AdminCourseMgrView(generic.ListView):
 
     def get_queryset(self):
         return Course.objects.all()
+
+
+def reset(request):
+    password = request.POST['password']
+    confirm = request.POST['confirm']
+    name = request.POST['username']
+    if password != confirm:
+        messages.error(request, '两次密码不符合')
+        return HttpResponseRedirect(reverse('resetPassword', kwargs={'name': name}))
+    elif password == '':
+        messages.error(request, '请不要输入空密码')
+        return HttpResponseRedirect(reverse('resetPassword', kwargs={'name': name}))
+    else:
+        user = CustomUser.objects.filter(username=name)[0]
+        user.get_password()
+        user.save()
+        return HttpResponseRedirect(reverse('login'))
+
+
+# 'pbkdf2_sha256$260000$YRhbfZcZrYVIhRrQAETBzP$XD9BRKpsxsXBVnWq4/I1a57vcQDxYZLoOPsbuUvLw/k='
+# 'pbkdf2_sha256$260000$yXKqZTFtkgDbiNxYpAbIoT$3xqXh+6dstahnVnIoX7GN4DjglPnwgZ6OBHdiJK83oY='
+# pbkdf2_sha256$260000$YRhbfZcZrYVIhRrQAETBzP$XD9BRKpsxsXBVnWq4/I1a57vcQDxYZLoOPsbuUvLw/k=
+def adminClassMgr(request):
+    content = StuClass.objects.all()
+    return render(request, 'adminMgrClass.html', {'content': content})
+
+
+def adminArrangeCourse(request):
+    courses = Course.objects.all()
+    stuClass = StuClass.objects.all()
+    staffs = Staff.objects.all()
+    return render(request, 'adminArrangeCourse.html', {'courses': courses, 'classes': stuClass, 'staffs': staffs})
+
+
+def adminComArrCourse(request):
+    course_id = request.POST['course']
+    class_id = request.POST['class']
+    staff_id = request.POST['staff']
+    try:
+        staff = Staff.objects.get(pk=staff_id)
+        tclass = StuClass.objects.get(pk=class_id)
+        course = Course.objects.get(pk=course_id)
+        staff.courses.add(course)
+
+        for student in tclass.student_set.all():
+            study = Study.objects.create(score=-1)
+            study.course = course
+            study.student = student
+            study.save()
+
+        staff.save()
+        # tclass.save()
+
+        messages.success(request, '安排课程成功')
+
+    except Exception as e:
+        messages.error(request, '安排课程失败')
+        raise e
+    return HttpResponseRedirect(reverse('adminArrangeCourse'))
+
+
+def adminComMgrStaff(request, id):
+    class_id = request.POST['class']
+    course_id = request.POST['course']
+    staff = Staff.objects.get(pk=id)
+    username = staff.admin.username
+    try:
+        course = Course.objects.get(pk=course_id)
+        tclass = StuClass.objects.get(pk=class_id)
+        course.staff_set.remove(staff)
+        staff.courses.remove(course)
+        study = course.study_set.filter(course=course)
+        if len(study) == 0:
+            messages.error(request, '删除失败')
+        else:
+            for s in study:
+                s.delete()
+                pass
+            messages.success(request, '删除成功')
+    except:
+        messages.error(request, "删除失败")
+    # messages.success(request, 'success')
+
+    courses = Course.objects.all()
+    stuClass = StuClass.objects.all()
+    return render(request, 'adminStaffMgr.html',
+                  {'username': username, 'courses': courses, 'stuClass': stuClass, 'staff': staff})

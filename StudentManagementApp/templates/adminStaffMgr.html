@@ -1,88 +1,86 @@
 {% extends 'base_template/adminBase.html' %}
+{% load tags %}
 {% block main_content %}
     <div class="card shadow">
-        <div class="card-header py-3"><p class="text-primary m-0 fw-bold">{{ contents.1 }}</p></div>
+        <div class="card-header py-3"><p class="text-primary m-0 fw-bold">{{ username }}</p></div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 text-nowrap">
-                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label
-                            class="form-label">管理<select
-                            class="d-inline-block form-select form-select-sm">
-                        <option value="10" selected="">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>&nbsp;</label></div>
+                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"></div>
                 </div>
                 <div class="col-md-6">
-                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
-                            class="form-label"><input type="search" class="form-control form-control-sm"
-                                                      aria-controls="dataTable"
-                                                      placeholder="搜索"></label></div>
+                    <div class="text-md-end dataTables_filter" id="dataTable_filter"></div>
                 </div>
             </div>
             <div class="table-responsive table mt-2" id="dataTable" role="grid"
                  aria-describedby="dataTable_info">
-                <table class="table text-nowrap table-hover" id="dataTable">
-                    <thead>
-                    <tr>
-                        <th>班级</th>
-                        <th>课程</th>
-                        <th>管理</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {# 妈的，五层for循环，我感觉我不该整这么规范的表 #}
-                    {% for teach in contents.0 %}
-                        {% for name in teach.stuClass.all %}
-                            {% for course in name.student_set.all %}
-                                {% for coursenames in course.study_set.all %}
-                                    {% for coursename in coursenames.course_id.all %}
-                                        <tr class="table-responsive-sm table-light" style="font-size: 20px">
-                                            <td>{{ name.name }}</td>
-                                            <td>{{ coursename.name }}</td>
-                                            <th><a href="#" class="active">操作</a></th>
-                                        </tr>
-                                    {% endfor %}
-                                {% endfor %}
+
+                <form action="{% url 'adminComMgrStaffEdit' id=staff.id %}" method="post"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table class="table text-nowrap table-hover table-bordered" id="dataTable">
+                        <thead>
+                        <tr class="text-center">
+                            <th>班级</th>
+                            <th>课程</th>
+                        </tr>
+                        </thead>
+                        <tbody align="center">
+
+                        {% for course in courses %}
+                            {% for study in course.study_set.all %}
+                                <tr>
+                                    <td>{{ study.student.inClass.name }}</td>
+                                    <td>{{ course.name }}</td>
+                                </tr>
                             {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                    </tbody>
-                    {#                    <tfoot>#}
-                    {#                    <tr>#}
-                    {#                        <td><strong>班级</strong></td>#}
-                    {#                        <td><strong>课程</strong></td>#}
-                    {#                        <td><strong>管理</strong></td>#}
-                    {#                    </tr>#}
-                    {#                    </tfoot>#}
-                </table>
+
+
+                        </tbody>
+                    </table>
+
+                    <div class="row mb-3 table-responsive table mt-2" role="grid"
+                         aria-describedby="dataTable_info">
+                        <label class="text-center">修改表</label>
+                        <table class="table text-nowrap table-responsive-sm">
+                            <tbody>
+                            <td><select name="class" id="class" class="select2-container--above text-center">
+                                {% for name in stuClass.all %}
+                                    <option value="{{ name.class_id }}">{{ name.name }}</option>
+                                {% endfor %}
+                            </select></td>
+                            <td><select name="course" id="course" class="select2-container--above text-center">
+                                {% for course in courses %}
+                                    <option value="{{ course.id }}">{{ course.name }}</option>
+                                {% endfor %}
+                            </select></td>
+                            <td>
+                                <input type="submit" value="删除" class="btn btn-danger btn-outline-dark">
+                            </td>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        {% if messages %}
+                            <div class="col-12">
+                                {% for message in messages %}
+                                    {% if message.tags == 'error' %}
+                                        <div class="alert alert-danger"
+                                             style="margin-top:10px">{{ message }}</div>
+                                    {% endif %}
+                                    {% if message.tags == 'success' %}
+                                        <div class="alert alert-success"
+                                             style="margin-top:10px">{{ message }}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </form>
             </div>
-            {#            <div class="row">#}
-            {#                <div class="col-md-6 align-self-center"><p id="dataTable_info" class="dataTables_info"#}
-            {#                                                           role="status" aria-live="polite">Showing 1 to#}
-            {#                    {{ contents.0.count }}#}
-            {#                    of {{ contents.0.count }}</p></div>#}
-            {#                <div class="col-md-6">#}
-            {#                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">#}
-            {#                        <ul class="pagination">#}
-            {#                            {% for page in staffs %}#}
-            {#                                <li class="page-item active"><a href="#" class="page-link">{{ forloop.counter }}</a>#}
-            {#                                </li>#}
-            {#                            <li class="page-item disabled"><a class="page-link" href="#"#}
-            {#                                                              aria-label="Previous"><span#}
-            {#                                    aria-hidden="true">«</span></a></li>#}
-            {#                            <li class="page-item active"><a class="page-link" href="#">1</a></li>#}
-            {#                            <li class="page-item"><a class="page-link" href="#">2</a></li>#}
-            {#                            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
-            {#                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span#}
-            {#                                    aria-hidden="true">»</span></a></li>#}
-            {#                            {% endfor %}#}
-            {#                        </ul>#}
-            {#                    </nav>#}
-            {#                </div>#}
-            {#            </div>#}
-            {#        </div>#}
         </div>
+    </div>
 
 {% endblock main_content %}

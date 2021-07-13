@@ -1,4 +1,5 @@
 {% extends 'base_template/adminBase.html' %}
+{% load static %}
 {% block main_content %}
     <!-- Main content -->
     <section class="content">
@@ -7,24 +8,22 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">课程详情</h3>
+                            <h3 class="card-title">详情</h3>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap table-bordered">
-                                <thead>
-                                <tr style="font-size: 30px">
-                                    <th style="font-size: 25px">ID</th>
-                                    <th style="font-size: 25px">课程名</th>
-                                    <th style="font-size: 25px">学分</th>
+                        <div class="card-body table-responsive p-0 ">
+                            <table class="table table-hover text-nowrap table-bordered " style="border: #0e6042">
+                                <thead class="table">
+                                <tr>
+                                    <th>班级ID</th>
+                                    <th>班级名</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for course in courses %}
-                                    <tr class="table-responsive-sm table-light" style="font-size: 20px; ">
-                                        <td>{{ course.id }}</td>
-                                        <td>{{ course.name }}</td>
-                                        <td>{{ course.credit }}</td>
+                                {% for class in content %}
+                                    <tr class="table-responsive-sm table-light" style="font-size: 20px">
+                                        <td>{{ class.class_id }}</td>
+                                        <td>{{ class.name }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
@@ -38,6 +37,5 @@
         </div>
     </section>
     <!-- /.content -->
-
 
 {% endblock main_content %}

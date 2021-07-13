@@ -1,5 +1,6 @@
 {% extends 'base_template/base.html' %}
 {% load static %}
+{% load mathfilters %}
 {% block main_content %}
     <div id="content">
         <div class="container-fluid"><h3 class="text-dark mb-4">概览</h3>
@@ -7,7 +8,7 @@
                 <div class="col-lg-4">
                     <div class="card mb-3">
                         <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4"
-                                                                       src="assets/img/dogs/image2.jpeg" width="160"
+                                                                       src="#" width="160"
                                                                        height="160">
                             {#                                <div class="mb-3">#}
                             {#                                    <button class="btn btn-primary btn-sm" type="button">更改照片</button>#}
@@ -51,44 +52,49 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3"><label class="form-label"
+                                                                     for="number"><strong>学号</strong></label><input
+                                                    class="form-control" type="text" id="number"
+                                                    value="{{ user.user_id }}" name="number" readonly></div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3"><label class="form-label"
                                                                      for="username"><strong>姓名</strong><br></label><input
                                                     class="form-control" type="text" id="username"
-                                                    placeholder="姓名" name="username"></div>
+                                                    value="{{ user.username }}" name="username" readonly></div>
                                         </div>
+
+                                    </div>
+                                    <div class="row">
                                         <div class="col">
                                             <div class="mb-3"><label class="form-label"
                                                                      for="email"><strong>邮箱</strong></label><input
                                                     class="form-control" type="email" id="email"
-                                                    placeholder="user@example.com" name="email"></div>
+                                                    value="{{ user.email }}" name="email" readonly></div>
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col">
                                             <div class="mb-3"><label class="form-label"
                                                                      for="first_name"><strong>专业</strong><br></label><input
                                                     class="form-control" type="text" id="first_name"
-                                                    placeholder="专业" name="first_name"></div>
+                                                    value="{{ user.student.inClass.subject }}" name="course" readonly>
+                                            </div>
                                         </div>
-                                        <div class="col">
-                                            <div class="mb-3"><label class="form-label"
-                                                                     for="last_name"><strong>年级</strong></label><input
-                                                    class="form-control" type="text" id="last_name"
-                                                    placeholder="年级" name="last_name"></div>
-                                        </div>
+
                                     </div>
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3"><label class="form-label"
-                                                                     for="gender"><strong>性别</strong><br></label><input
-                                                    class="form-control" type="text" id="first_name"
-                                                    placeholder="男或女" name="gender"></div>
+                                                                     for="last_name"><strong>年级</strong></label><input
+                                                    class="form-control" type="text" id="last_name"
+                                                    value="大 {{ now|add:1|sub:user.in_school_time.year }}" name="grade"
+                                                    readonly></div>
                                         </div>
                                         <div class="col">
                                             <div class="mb-3"><label class="form-label"
-                                                                     for="hobby"><strong>爱好</strong></label><input
-                                                    class="form-control" type="text" id="last_name"
-                                                    placeholder="爱好" name="hobby"></div>
+                                                                     for="gender"><strong>性别</strong><br></label><input
+                                                    class="form-control" type="text" id="first_name"
+                                                    value="{{ user.student.gender }}" name="gender" readonly></div>
                                         </div>
+
                                     </div>
                                     {#                                        <div class="mb-3">#}
                                     {#                                            <button class="btn btn-primary btn-sm" type="submit">保存设置</button>#}
@@ -103,20 +109,20 @@
                                     <div class="mb-3"><label class="form-label"
                                                              for="address"><strong>地址</strong></label><input
                                             class="form-control" type="text" id="address"
-                                            placeholder="郑州" name="address"></div>
+                                            value="{{ user.student.address }}" name="address" readonly></div>
                                     <div class="row">
-                                        <div class="col">
-                                            <div class="mb-3"><label class="form-label"
-                                                                     for="city"><strong>城市</strong></label><input
-                                                    class="form-control" type="text" id="city"
-                                                    placeholder="河南" name="city"></div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="mb-3"><label class="form-label"
-                                                                     for="country"><strong>国家</strong></label><input
-                                                    class="form-control" type="text" id="country"
-                                                    placeholder="中国" name="country"></div>
-                                        </div>
+                                        {#                                        <div class="col">#}
+                                        {#                                            <div class="mb-3"><label class="form-label"#}
+                                        {#                                                                     for="city"><strong>城市</strong></label><input#}
+                                        {#                                                    class="form-control" type="text" id="city"#}
+                                        {#                                                    placeholder="河南" name="city"></div>#}
+                                        {#                                        </div>#}
+                                        {#                                        <div class="col">#}
+                                        {#                                            <div class="mb-3"><label class="form-label"#}
+                                        {#                                                                     for="country"><strong>国家</strong></label><input#}
+                                        {#                                                    class="form-control" type="text" id="country"#}
+                                        {#                                                    placeholder="中国" name="country"></div>#}
+                                        {#                                        </div>#}
                                     </div>
                                     {#                                        <div class="mb-3">#}
                                     {#                                            <button class="btn btn-primary btn-sm" type="submit">保存设置</button>#}

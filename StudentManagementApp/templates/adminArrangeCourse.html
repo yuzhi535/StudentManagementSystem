@@ -1,0 +1,69 @@
+{% extends 'base_template/adminBase.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block main_content %}
+    <form action="{% url 'adminComArrCourse' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <select class="form-control" name="course">
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <select class="form-control" name="class">
+                {% for class in classes %}
+                    <option value="{{ class.class_id }}">{{ class.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <select class="form-control" name="staff">
+                {% for staff in staffs %}
+                    <option value="{{ staff.id }}">{{ staff.admin.username }}</option>
+                {% endfor %}
+            </select>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% if messages %}
+                <div class="col-12">
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
+                        {% endif %}
+                        {% if message.tags == 'success' %}
+                            <div class="alert alert-success" style="margin-top:10px">{{ message }}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <!-- /.col -->
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-block">确认</button>
+            </div><!-- /.col -->
+        </div>
+
+    </form>
+
+{% endblock main_content %}

@@ -10,6 +10,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">详情</h3>
+                            <h4><a href="{% url 'stuExport' %}">导出到esv文件</a></h4>
 
                             {#                            <div class="card-tools">#}
                             {#                                <div class="input-group input-group-sm" style="width: 150px;">#}
@@ -25,8 +26,8 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap" style="border: #0e6042">
-                                <thead>
+                            <table class="table table-hover text-nowrap table-bordered" style="border: #0e6042">
+                                <thead class="table-primary">
                                 <tr>
                                     <th>ID</th>
                                     <th>姓名</th>
@@ -35,6 +36,8 @@
                                     <th>性别</th>
                                     <th>照片</th>
                                     <th>入学时间</th>
+                                    <th>班级</th>
+                                    <th>院系</th>
                                     {#                                    <th>操作</th>#}
                                 </tr>
                                 </thead>
@@ -46,8 +49,10 @@
                                         <td>{{ student.admin.email }}</td>
                                         <td>{{ student.address }}</td>
                                         <td>{{ student.gender }}</td>
-                                        <td><img src="{{ student.profile_pic }}" style="width:100px"/></td>
+                                        <td><img src="{{ student.pic }}" alt="没有照片" style="width:100px"/></td>
                                         <td>{{ student.admin.in_school_time.date }}</td>
+                                        <td>{{ student.inClass.name }}</td>
+                                        <td>{{ student.dept }}</td>
                                         {#                                        <td><a href="#"#}
                                         {#                                               class="btn btn-danger">删除#}
                                         {#                                        </a>#}

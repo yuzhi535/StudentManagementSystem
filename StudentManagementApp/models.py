@@ -1,7 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
@@ -27,6 +27,7 @@ class Student(models.Model):
 
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    dept = models.CharField(max_length=255, verbose_name='院系', default='信工')
 
     class Meta:
         verbose_name = '学生'
@@ -48,6 +49,7 @@ class Staff(models.Model):
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     courses = models.ManyToManyField('Course')
+    dept = models.CharField(max_length=255, verbose_name='院系', default='信工')
 
     class Meta:
         verbose_name = '教员'
@@ -95,7 +97,7 @@ class StuClass(models.Model):
 class Study(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
-    score = models.IntegerField()
+    score = models.IntegerField(verbose_name='分数')
 
     class Meta:
         verbose_name = '修习'

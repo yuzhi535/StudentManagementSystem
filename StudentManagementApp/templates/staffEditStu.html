@@ -31,22 +31,23 @@
                     <tbody align="center">
 
                     {% for courses in staff.courses.all %}
+
                         {% for study in courses.study_set.all %}
-                            <td>{{ study.student.inClass.name }}</td>
-                            <td>{{ courses.name }}</td>
-                            <td>{{ study.student.id }}</td>
-                            <td>{{ study.student.admin.username }}</td>
-                            {% if study.score < 0 %}
-                                <td>尚未考试</td>
-                            {% else %}
-                                <td>{{ study.score }}</td>
-                            {% endif %}
-                            <td>
-                                <a href="{% url 'staffEditScore' id=study.student.id id1=courses.id id2=staff.id coursename=courses.name classname=study.student.inClass.name %}"
-                                   class="btn btn-danger btn-google">修改</a></td>
+                            <tr>
+                                <td>{{ study.student.inClass.name }}</td>
+                                <td>{{ courses.name }}</td>
+                                <td>{{ study.student.id }}</td>
+                                <td>{{ study.student.admin.username }}</td>
+                                {% if study.score < 0 %}
+                                    <td>尚未考试</td>
+                                {% else %}
+                                    <td>{{ study.score }}</td>
+                                {% endif %}
+                                <td>
+                                    <a href="{% url 'staffEditScore' id=study.student.id id1=courses.id id2=staff.id coursename=courses.name classname=study.student.inClass.name %}"
+                                       class="btn btn-danger btn-google">修改</a></td>
+                            </tr>
                         {% endfor %}
-                        <tr>
-                        </tr>
                     {% endfor %}
 
 

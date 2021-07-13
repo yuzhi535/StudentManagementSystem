@@ -1,6 +1,7 @@
 {% extends 'base_template/adminBase.html' %}
 
 {% block main_content %}
+    <div class="row-cols-auto">添加学生</div>
     <form action="complete/" method="post" id="demo-form" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="input-group mb-3">
@@ -106,6 +107,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="院系" name="dept">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <!-- /.col -->
             <div class="col-12">

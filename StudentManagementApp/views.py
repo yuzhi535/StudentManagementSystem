@@ -1,19 +1,19 @@
+import csv
 import datetime
 import json
 
+import requests
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.core.files.storage import FileSystemStorage
+from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-import requests
-
 # Create your views here.
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.views import generic
-from django.views.generic import ListView
 
 from StudentManagementApp.UserBackEnd import UserBackEnd
 from StudentManagementApp.models import CustomUser, Course, Study, StuClass, Staff, Student
@@ -125,6 +125,9 @@ def adminComStu(request):
         time = request.POST['time']
         time = parse_date(time)
         choice = request.POST['choice']
+        dept = request.POST['dept']
+        if dept == '':
+            dept = '信工'
         pic_url = '#'
         if request.FILES['profile_pic']:
             pic = request.FILES['profile_pic']
@@ -144,6 +147,7 @@ def adminComStu(request):
                 user.student.gender = sex
                 user.student.inClass_id = choice
                 user.student.pic = pic_url
+                user.student.dept = dept
                 user.save()
                 messages.success(request, 'success!')
             else:
@@ -188,6 +192,17 @@ def adminComStaff(request):
         address = request.POST['address']
         sex = request.POST['sex']
         phone = request.POST['phone']
+        dept = request.POST['dept']
+        if dept == "":
+            dept = '信工'
+
+        pic_url = '/static/assets/img/avatars/zzu.png'
+        if request.FILES.get('profile_pic'):
+            pic = request.FILES['profile_pic']
+            fs = FileSystemStorage()
+            filename = fs.save(pic.name, pic)
+            pic_url = fs.url(filename)
+
         try:
             if len(CustomUser.objects.filter(user_id=user_id)) == 0:
                 user = CustomUser.objects.create_user(user_id=user_id, username=name, email=email, password=passwd,
@@ -195,11 +210,13 @@ def adminComStaff(request):
                                                       )
                 user.staff.address = address
                 user.staff.gender = sex
+                user.staff.pic = pic_url
+                user.staff.dept = dept
                 user.save()
                 messages.success(request, 'success!')
             else:
                 messages.error(request, 'failed!')
-            return HttpResponseRedirect(reverse('adminAddStaff'))
+            return HttpResponseRedirect('/adminHome/addStaff/')
         except:
             messages.error(request, 'failed!')
             return HttpResponseRedirect('/adminHome/addStaff/')
@@ -414,4 +431,16 @@ def staffEditStuScore(request):
     for study in studies:
         study.score = score
         study.save()
+        # study.score = F('score')
     return HttpResponseRedirect(reverse(staffAboutStu, kwargs={'id': id2}))
+
+
+def stuExport(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="users.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['学生ID', '姓名', '邮箱', '手机号'])
+    users = CustomUser.objects.values_list('user_id', 'username', 'email', 'phone_number')
+    for user in users:
+        writer.writerow(user)
+    return response

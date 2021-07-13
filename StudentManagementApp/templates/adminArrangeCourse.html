@@ -2,6 +2,7 @@
 {% load static %}
 {% load mathfilters %}
 {% block main_content %}
+    <div class="row-cols-auto">安排课程</div>
     <form action="{% url 'adminComArrCourse' %}" method="post">
         {% csrf_token %}
         <div class="input-group mb-3">

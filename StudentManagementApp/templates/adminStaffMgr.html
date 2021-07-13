@@ -23,17 +23,27 @@
                         <tr class="text-center">
                             <th>班级</th>
                             <th>课程</th>
+                            <td>人数</td>
                         </tr>
                         </thead>
                         <tbody align="center">
 
                         {% for course in courses %}
-                            {% for study in course.study_set.all %}
-                                <tr>
-                                    <td>{{ study.student.inClass.name }}</td>
-                                    <td>{{ course.name }}</td>
-                                </tr>
-                            {% endfor %}
+                            <tr>
+                                <td>{{ course.study_set.all.0.student.inClass.name }}</td>
+                                <td>{{ course.name }}</td>
+                                <td>
+                                    {{ course.study_set.all.count }}
+                                </td>
+                            </tr>
+
+
+                            {#                            {% for study in course.study_set.all %}#}
+                            {#                                <tr>#}
+                            {#                                    <td>{{ study.student.inClass.name }}</td>#}
+                            {#                                    <td>{{ course.name }}</td>#}
+                            {#                                </tr>#}
+                            {#                            {% endfor %}#}
                         {% endfor %}
 
 

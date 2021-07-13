@@ -45,5 +45,6 @@ urlpatterns = [
                       ':classname>',
                       views.staffEditScore, name='staffEditScore'),
                   path('staffHome/edidStu/score/', views.staffEditStuScore, name='staffEditStuScore'),
+                  path('adminHome/export_to_excel', views.stuExport, name='stuExport'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,
                                                                                          document_root=settings.STATIC_ROOT)

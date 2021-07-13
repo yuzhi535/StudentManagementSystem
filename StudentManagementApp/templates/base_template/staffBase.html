@@ -28,7 +28,7 @@
                 <li class="nav-item"><a class="nav-link" href='{% url 'staffAboutStu' id=user.user_id %}'><i
                         class="fas fa-user"></i><span>查看学生</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'staffEditStu' id=user.user_id %}"><i
-                        class="fas fa-user"></i><span>添加成绩</span></a>
+                        class="fas fa-user"></i><span>修改成绩</span></a>
                 </li>
                 {#                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-key"></i><span>重设密码</span></a>#}
                 {#                </li>#}
@@ -168,7 +168,7 @@
                                     </span>
                                     <img
                                             class="border rounded-circle img-profile"
-                                            src="{% static "assets/img/avatars/zzu.png" %}"></a>
+                                            src="{{ user.staff.pic }}"></a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                                     {#                                    <div class="dropdown-divider"></div>#}
                                     <a class="dropdown-item" href={% url 'logout' %}><i

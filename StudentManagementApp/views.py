@@ -3,6 +3,7 @@ import json
 
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 import requests
@@ -124,11 +125,17 @@ def adminComStu(request):
         time = request.POST['time']
         time = parse_date(time)
         choice = request.POST['choice']
+        pic_url = '#'
+        if request.FILES['profile_pic']:
+            pic = request.FILES['profile_pic']
+            fs = FileSystemStorage()
+            filename = fs.save(pic.name, pic)
+            pic_url = fs.url(filename)
 
         try:
             # 比较时间，不能是将来的时间
             if datetime.datetime(time.year, time.month, time.day) > timezone.now():
-                messages.error(request, 'failed!')
+                messages.error(request, '时间不能是未来!')
             elif len(CustomUser.objects.filter(user_id=user_id)) == 0:
                 user = CustomUser.objects.create_user(user_id=user_id, username=name, email=email, password=passwd,
                                                       phone_number=phone, user_type=3, in_school_time=time
@@ -136,12 +143,13 @@ def adminComStu(request):
                 user.student.address = address
                 user.student.gender = sex
                 user.student.inClass_id = choice
+                user.student.pic = pic_url
                 user.save()
                 messages.success(request, 'success!')
             else:
-                messages.error(request, 'failed!')
+                messages.error(request, 'id重复了!')
         except:
-            messages.error(request, 'failed!')
+            messages.error(request, '添加失败!')
         return HttpResponseRedirect('/adminHome/addStu/')
 
 

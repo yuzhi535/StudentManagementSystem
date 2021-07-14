@@ -24,5 +24,12 @@
       <jdbc-url>jdbc:postgresql://127.0.0.1:5432/school</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="opengauss - school@localhost" uuid="f7ef8fd7-f4cc-4ab9-a88e-018ae1fc3a65">
+      <driver-ref>java.sql.Driver</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:15432/school</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

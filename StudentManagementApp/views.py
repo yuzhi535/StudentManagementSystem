@@ -138,7 +138,7 @@ def adminComStu(request):
         try:
             if bool(re.search('[a-z]', user_id)):
                 raise Exception
-            if name == '' or email == '' or passwd == '' or address == '' or sex == '' or phone == '' or time == '' or choice == '' or dept == '':
+            if name == '' or email == '' or passwd == '' or address == '' or sex == '' or phone == '' or time == '' or choice == None or dept == '':
                 raise Exception
             # 比较时间，不能是将来的时间
             time = parse_date(time)
@@ -318,9 +318,6 @@ def reset(request):
         return HttpResponseRedirect(reverse('login'))
 
 
-# 'pbkdf2_sha256$260000$YRhbfZcZrYVIhRrQAETBzP$XD9BRKpsxsXBVnWq4/I1a57vcQDxYZLoOPsbuUvLw/k='
-# 'pbkdf2_sha256$260000$yXKqZTFtkgDbiNxYpAbIoT$3xqXh+6dstahnVnIoX7GN4DjglPnwgZ6OBHdiJK83oY='
-# pbkdf2_sha256$260000$YRhbfZcZrYVIhRrQAETBzP$XD9BRKpsxsXBVnWq4/I1a57vcQDxYZLoOPsbuUvLw/k=
 def adminClassMgr(request):
     content = StuClass.objects.all()
     return render(request, 'adminMgrClass.html', {'content': content})
@@ -334,10 +331,13 @@ def adminArrangeCourse(request):
 
 
 def adminComArrCourse(request):
-    course_id = request.POST['course']
-    class_id = request.POST['class']
-    staff_id = request.POST['staff']
+    course_id = request.POST.get('course')
+    class_id = request.POST.get('class')
+    staff_id = request.POST.get('staff')
     try:
+        if course_id == None or course_id == None or staff_id == None:
+            raise Exception
+
         staff = Staff.objects.get(pk=staff_id)
         tclass = StuClass.objects.get(pk=class_id)
         course = Course.objects.get(pk=course_id)
@@ -347,6 +347,7 @@ def adminComArrCourse(request):
             study = Study.objects.create(score=-1)
             study.course = course
             study.student = student
+            study.staff = staff
             study.save()
 
         staff.save()
@@ -356,7 +357,6 @@ def adminComArrCourse(request):
 
     except Exception as e:
         messages.error(request, '安排课程失败')
-        raise e
     return HttpResponseRedirect(reverse('adminArrangeCourse'))
 
 
@@ -368,8 +368,6 @@ def adminComMgrStaff(request, id):
     try:
         course = Course.objects.get(pk=course_id)
         tclass = StuClass.objects.get(pk=class_id)
-        course.staff_set.remove(staff)
-        staff.courses.remove(course)
         study = course.study_set.filter(course=course)
         if len(study) == 0:
             messages.error(request, '删除失败')
@@ -377,10 +375,11 @@ def adminComMgrStaff(request, id):
             for s in study:
                 s.delete()
                 pass
+            staff.courses.remove(course)
+            course.staff_set.remove(staff)
             messages.success(request, '删除成功')
     except:
         messages.error(request, "删除失败")
-    # messages.success(request, 'success')
 
     courses = Course.objects.all()
     stuClass = StuClass.objects.all()
@@ -451,3 +450,14 @@ def stuExport(request):
     for user in users:
         writer.writerow(user)
     return response
+
+
+def adminSearchStu(request):
+    name = request.POST.get('search')
+    if name == "*":
+        content = Student.objects.all()
+    else:
+        # name = '%' + name + '%'
+        contents = Student.objects.filter(admin__username__contains=name)
+        content = [user for user in contents]
+    return render(request, 'adminMgrStu.html', {'students': content})

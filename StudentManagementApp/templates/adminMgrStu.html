@@ -3,32 +3,32 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">详情</h3>
                             <h4><a href="{% url 'stuExport' %}">导出到csv文件</a></h4>
-
-                            {#                            <div class="card-tools">#}
-                            {#                                <div class="input-group input-group-sm" style="width: 150px;">#}
-                            {#                                    <input type="text" name="table_search" class="form-control float-right"#}
-                            {#                                           placeholder="Search">#}
-                            {##}
-                            {#                                    <div class="input-group-append">#}
-                            {#                                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i>#}
-                            {#                                        </button>#}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
+                            <form action="{% url 'adminSearchStu' %}" method="post">
+                                {% csrf_token %}
+                                <div class="card-tools">
+                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="search" name="search" class="form-control float-right"
+                                               placeholder="模糊搜索姓名">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap table-bordered" style="border: #0e6042">
                                 <thead class="table-primary">
                                 <tr>
+                                    <th>序号</th>
                                     <th>ID</th>
                                     <th>姓名</th>
                                     <th>邮箱</th>
@@ -44,6 +44,7 @@
                                 <tbody>
                                 {% for student in students %}
                                     <tr class="table-responsive-sm table-light" style="font-size: 20px">
+                                        <td>{{ forloop.counter }}</td>
                                         <td>{{ student.admin.user_id }}</td>
                                         <td>{{ student.admin.username }}</td>
                                         <td>{{ student.admin.email }}</td>

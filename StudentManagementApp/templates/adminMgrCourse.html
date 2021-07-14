@@ -14,6 +14,7 @@
                             <table class="table table-hover text-nowrap table-bordered">
                                 <thead>
                                 <tr style="font-size: 30px">
+                                    <th>序号</th>
                                     <th style="font-size: 25px">ID</th>
                                     <th style="font-size: 25px">课程名</th>
                                     <th style="font-size: 25px">学分</th>
@@ -22,6 +23,7 @@
                                 <tbody>
                                 {% for course in courses %}
                                     <tr class="table-responsive-sm table-light" style="font-size: 20px; ">
+                                        <td>{{ forloop.counter }}</td>
                                         <td>{{ course.id }}</td>
                                         <td>{{ course.name }}</td>
                                         <td>{{ course.credit }}</td>

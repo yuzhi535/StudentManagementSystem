@@ -3,10 +3,13 @@
 {% load mathfilters %}
 {% block main_content %}
     <div class="row-cols-auto">安排课程</div>
+    <div class="mb-3">
+    </div>
     <form action="{% url 'adminComArrCourse' %}" method="post">
         {% csrf_token %}
         <div class="input-group mb-3">
-            <select class="form-control" name="course">
+            <label>课程 &nbsp;&nbsp;</label>
+            <select class="form-control" name="course" id="course">
                 {% for course in courses %}
                     <option value="{{ course.id }}">{{ course.name }}</option>
                 {% endfor %}
@@ -19,7 +22,8 @@
         </div>
 
         <div class="input-group mb-3">
-            <select class="form-control" name="class">
+            <label>班级 &nbsp;&nbsp;</label>
+            <select class="form-control" name="class" id="class">
                 {% for class in classes %}
                     <option value="{{ class.class_id }}">{{ class.name }}</option>
                 {% endfor %}
@@ -32,7 +36,8 @@
         </div>
 
         <div class="input-group mb-3">
-            <select class="form-control" name="staff">
+            <label>教员 &nbsp;&nbsp;</label>
+            <select class="form-control" name="staff" id="staff">
                 {% for staff in staffs %}
                     <option value="{{ staff.id }}">{{ staff.admin.username }}</option>
                 {% endfor %}

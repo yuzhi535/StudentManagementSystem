@@ -30,23 +30,18 @@
 
                         {% for course in courses %}
                             <tr>
-                                {% if course.study_set.all.count %}
-
-                                    <td>{{ course.study_set.all.0.student.inClass.name }}</td>
-                                    <td>{{ course.name }}</td>
-                                    <td>
-                                        {{ course.study_set.all.count }}
-                                    </td>
-                                {% endif %}
+                                {% for foo in course.study_set.all %}
+                                    {% if foo.staff.id == staff.id %}
+                                        {% if forloop.counter == 1 %}
+                                            <td>{{ course.study_set.all.0.student.inClass.name }}</td>
+                                            <td>{{ course.name }}</td>
+                                            <td>
+                                                {{ course.study_set.all.count }}
+                                            </td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
                             </tr>
-
-
-                            {#                            {% for study in course.study_set.all %}#}
-                            {#                                <tr>#}
-                            {#                                    <td>{{ study.student.inClass.name }}</td>#}
-                            {#                                    <td>{{ course.name }}</td>#}
-                            {#                                </tr>#}
-                            {#                            {% endfor %}#}
                         {% endfor %}
 
 

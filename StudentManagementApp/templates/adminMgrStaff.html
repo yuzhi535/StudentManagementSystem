@@ -12,18 +12,16 @@
                     <table class="table my-0 table-bordered" id="dataTable">
                         <thead>
                         <tr>
+                            <th>序号</th>
                             <th>教师编号</th>
                             <th>教师名称</th>
                             <th>管理</th>
-                            {#                        <th>教师性别</th>#}
-                            {#                        <th>阿斯顿发</th>#}
-                            {#                        <th>学年学期</th>#}
-                            {#                        <th>绩点</th>#}
                         </tr>
                         </thead>
                         <tbody>
                         {% for staff in staffs %}
                             <tr class="table-responsive-sm table-light" style="font-size: 20px">
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ staff.id }}</td>
                                 <td>{{ staff.admin.username }}</td>
                                 <th><a class="btn btn-info" href="{% url 'adminStaffMgr' staff.id %}">操作</a></th>

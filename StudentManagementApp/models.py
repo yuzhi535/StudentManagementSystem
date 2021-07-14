@@ -13,6 +13,9 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
     REQUIRED_FIELDS = ['user_id', 'phone_number', 'email']
 
+    class Meta:
+        ordering = ('user_id',)
+
 
 # Create your models here.
 class Student(models.Model):
@@ -97,6 +100,7 @@ class StuClass(models.Model):
 class Study(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, blank=True, null=True)
     score = models.IntegerField(verbose_name='分数')
 
     class Meta:

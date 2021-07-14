@@ -138,7 +138,8 @@ def adminComStu(request):
         try:
             if bool(re.search('[a-z]', user_id)):
                 raise Exception
-            if name == '' or email == '' or passwd == '' or address == '' or sex == '' or phone == '' or time == '' or choice == None or dept == '':
+            if name == '' or email == '' or passwd == '' or address == '' or sex == '' or phone == '' or time == '' \
+                    or choice == None or dept == '':
                 raise Exception
             # 比较时间，不能是将来的时间
             time = parse_date(time)

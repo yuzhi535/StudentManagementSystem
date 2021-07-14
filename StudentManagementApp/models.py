@@ -8,7 +8,7 @@ from django.dispatch import receiver
 class CustomUser(AbstractUser):
     user_id = models.CharField(primary_key=True, max_length=255, verbose_name='用户ID')
     phone_number = models.IntegerField(verbose_name='手机号')
-    in_school_time = models.DateTimeField(auto_now_add=True)
+    in_school_time = models.DateTimeField(auto_now_add=True, verbose_name='报到时间')
     user_type_data = ((1, "Admin"), (2, "Staff"), (3, "Student"))
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
     REQUIRED_FIELDS = ['user_id', 'phone_number', 'email']
@@ -18,15 +18,15 @@ class CustomUser(AbstractUser):
 class Student(models.Model):
     id = models.CharField(primary_key=True, max_length=255, verbose_name='学号')
     # name = models.CharField(max_length=255, help_text='姓名', verbose_name='学生姓名')
-    gender = models.CharField(max_length=4, choices=[('男', '男性'), ('女', '女性')], help_text='性别')
+    gender = models.CharField(max_length=4, choices=[('男', '男性'), ('女', '女性')], help_text='性别', verbose_name='性别')
     # email = models.EmailField()
     # passwd = models.CharField(max_length=255)
-    address = models.TextField()
+    address = models.TextField(verbose_name='地址')
     # 所在班级
-    inClass = models.ForeignKey('StuClass', on_delete=models.CASCADE, null=True, blank=True)
+    inClass = models.ForeignKey('StuClass', on_delete=models.CASCADE, null=True, blank=True, verbose_name='班级')
 
     pic = models.FileField(verbose_name='个人照片')
-    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE, verbose_name='账号')
     dept = models.CharField(max_length=255, verbose_name='院系', default='信工')
 
     class Meta:
@@ -41,14 +41,14 @@ class Student(models.Model):
 class Staff(models.Model):
     id = models.CharField(primary_key=True, max_length=255, verbose_name='教师号')
     # name = models.CharField(max_length=255, help_text='姓名', verbose_name='学生姓名')
-    gender = models.CharField(max_length=4, choices=[('男', '男性'), ('女', '女性')], help_text='性别')
+    gender = models.CharField(max_length=4, choices=[('男', '男性'), ('女', '女性')], help_text='男或女', verbose_name='性别')
     # email = models.EmailField()
     # passwd = models.CharField(max_length=255)
-    address = models.TextField()
+    address = models.TextField(verbose_name='地址')
     # phone_number = models.IntegerField(verbose_name='手机号')
     pic = models.FileField(verbose_name='个人照片')
-    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    courses = models.ManyToManyField('Course')
+    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE, verbose_name='账号')
+    courses = models.ManyToManyField('Course', verbose_name='课程')
     dept = models.CharField(max_length=255, verbose_name='院系', default='信工')
 
     class Meta:
@@ -60,10 +60,10 @@ class Staff(models.Model):
 class Admin(models.Model):
     id = models.CharField(primary_key=True, max_length=255, verbose_name='学号')
     # name = models.CharField(max_length=255, help_text='姓名', verbose_name='学生姓名')
-    gender = models.CharField(max_length=4, choices=[('男', '男性'), ('女', '女性')], help_text='性别')
+    gender = models.CharField(max_length=4, choices=[('男', '男性'), ('女', '女性')], help_text='性别', verbose_name='性别')
     # email = models.EmailField()
     # passwd = models.CharField(max_length=255)
-    address = models.TextField()
+    address = models.TextField(verbose_name='地址')
     # phone_number = models.IntegerField(verbose_name='手机号', default=1)
     pic = models.FileField(verbose_name='个人照片')
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -74,7 +74,7 @@ class Admin(models.Model):
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=255, verbose_name='课程名称')
+    name = models.CharField(max_length=255, verbose_name='课程名称', unique=True)
     credit = models.IntegerField(verbose_name='学分')
 
     class Meta:

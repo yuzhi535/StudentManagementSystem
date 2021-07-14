@@ -1,20 +1,20 @@
 import csv
 import datetime
 import json
+import re
 
 import requests
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.core.files.storage import FileSystemStorage
-from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-# Create your views here.
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.views import generic
 
+# Create your views here.
 from StudentManagementApp.UserBackEnd import UserBackEnd
 from StudentManagementApp.models import CustomUser, Course, Study, StuClass, Staff, Student
 
@@ -108,35 +108,40 @@ def loadAdmin(request):
 
 def adminAddStu(request):
     choices = StuClass.objects.all()
-    return render(request, 'adminAddStu.html', {'choices': choices})
+    time = timezone.now()
+    return render(request, 'adminAddStu.html', {'choices': choices, 'time': time})
 
 
 def adminComStu(request):
     if request.method != 'POST':
         return HttpResponse('method is not allowed')
     else:
-        user_id = request.POST['username']
-        name = request.POST['name']
-        email = request.POST['email']
-        passwd = request.POST['password']
-        address = request.POST['address']
-        sex = request.POST['sex']
-        phone = request.POST['phone']
-        time = request.POST['time']
-        time = parse_date(time)
-        choice = request.POST['choice']
-        dept = request.POST['dept']
+        user_id = request.POST.get('username')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        passwd = request.POST.get('password')
+        address = request.POST.get('address')
+        sex = request.POST.get('sex')
+        phone = request.POST.get('phone')
+        time = request.POST.get('time')
+        choice = request.POST.get('choice')
+        dept = request.POST.get('dept')
         if dept == '':
             dept = '信工'
         pic_url = '#'
-        if request.FILES['profile_pic']:
+        if request.FILES.get('profile_pic'):
             pic = request.FILES['profile_pic']
             fs = FileSystemStorage()
             filename = fs.save(pic.name, pic)
             pic_url = fs.url(filename)
 
         try:
+            if bool(re.search('[a-z]', user_id)):
+                raise Exception
+            if name == '' or email == '' or passwd == '' or address == '' or sex == '' or phone == '' or time == '' or choice == '' or dept == '':
+                raise Exception
             # 比较时间，不能是将来的时间
+            time = parse_date(time)
             if datetime.datetime(time.year, time.month, time.day) > timezone.now():
                 messages.error(request, '时间不能是未来!')
             elif len(CustomUser.objects.filter(user_id=user_id)) == 0:
@@ -153,7 +158,7 @@ def adminComStu(request):
             else:
                 messages.error(request, 'id重复了!')
         except:
-            messages.error(request, '添加失败!')
+            messages.error(request, '添加失败!提示：id是否是纯数字或者必填项未填')
         return HttpResponseRedirect('/adminHome/addStu/')
 
 
@@ -167,11 +172,13 @@ def adminComCourse(request):
     try:
         course_name = request.POST['course']
         credit = request.POST['credit']
-        model = Course.objects.create(name=course_name, credit=credit)
-        model.save()
-        messages.success(request, '添加课程成功')
-        return HttpResponseRedirect(reverse('addCourse'))
-
+        if course_name != '' and credit != '':
+            model = Course.objects.create(name=course_name, credit=credit)
+            model.save()
+            messages.success(request, '添加课程成功')
+            return HttpResponseRedirect(reverse('addCourse'))
+        else:
+            raise Exception
     except:
         messages.error(request, '添加课程失败')
         return HttpResponseRedirect(reverse('addCourse'))
@@ -245,22 +252,22 @@ def adminComClass(request):
     if request.method != 'POST':
         return HttpResponse('method is not allowed')
 
-    id = request.POST['number']
-    name = request.POST['name']
+    id = request.POST.get('number')
+    name = request.POST.get('name')
+    subject = request.POST.get('subject')
     try:
-        model = StuClass.objects.create(class_id=id, name=name)
+        if id == '' or name == '' or subject == '':
+            raise Exception
+
+        model = StuClass.objects.create(class_id=id, name=name, subject=subject)
         model.save()
 
         messages.success(request, '添加班级成功')
     except Exception as e:
-        messages.error(request, '添加班级失败')
+        messages.error(request, '添加班级失败, 请检查是否某些项未填')
 
     return HttpResponseRedirect(reverse('adminAddClass'))
 
-
-# todo 教务处管理界面上，管理教员页面即罗列教员，其中可点击到某个具体教员身上，然后对他安排到教某个班某个课程
-# todo 重设密码
-# todo 教务处页面罗列班级、教员、学生
 
 def adminMgrStaff(request):
     content = Staff.objects.all()

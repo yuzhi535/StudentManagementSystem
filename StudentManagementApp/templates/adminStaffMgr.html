@@ -30,11 +30,14 @@
 
                         {% for course in courses %}
                             <tr>
-                                <td>{{ course.study_set.all.0.student.inClass.name }}</td>
-                                <td>{{ course.name }}</td>
-                                <td>
-                                    {{ course.study_set.all.count }}
-                                </td>
+                                {% if course.study_set.all.count %}
+
+                                    <td>{{ course.study_set.all.0.student.inClass.name }}</td>
+                                    <td>{{ course.name }}</td>
+                                    <td>
+                                        {{ course.study_set.all.count }}
+                                    </td>
+                                {% endif %}
                             </tr>
 
 

@@ -460,4 +460,4 @@ def adminSearchStu(request):
         # name = '%' + name + '%'
         contents = Student.objects.filter(admin__username__contains=name)
         content = [user for user in contents]
-    return render(request, 'adminMgrStu.html', {'students': content})
+    return render(request, 'adminMgrStu.html', {'students': content, 'name': name})
